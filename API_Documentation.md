@@ -21,7 +21,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `password`  *(required, string)*
     - `phoneNo`  *(required, string)*
     - `email`  *(optional, string)*
-    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Admin"}
+    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
 - **Respone:**
     - `201 Created` : User registered successfully
     - `400 Bad Request` : Invalid request body
