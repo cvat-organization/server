@@ -1,10 +1,8 @@
+/* !! RUNNING THIS SCRIPT DELETES THE DATABASE !! */
+
 const mongoose = require('mongoose');
 
 const uri = "mongodb+srv://admin:rkoprex@cluster0.yy0zmye.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-// Import Mongoose schemas
-const users = require('../models/users');
-const passwordResetRequests = require('../models/passwordResetRequests');
 
 const clientOptions = { 
     serverApi: { version: '1', strict: true, deprecationErrors: true },
@@ -15,15 +13,11 @@ async function run() {
     try {
         // Connect to the database
         await mongoose.connect(uri, clientOptions);
-        console.log("Connected to the database");
+        console.log("Connected to the Database");
 
-        // Create collections based on schemas
-        await Promise.all([
-            users.createCollection(),
-            passwordResetRequests.createCollection(),
-        ]);
-        await mongoose.connection.db.admin().command({ ping: 1 });
-        console.log("Database created successfully!");
+        // DELETE the database
+        await mongoose.connection.db.dropDatabase();
+        console.log("Database DELETED successfully!");
     }
     finally {
         // Ensures that the client will close when you finish/error

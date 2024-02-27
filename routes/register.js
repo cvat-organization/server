@@ -7,25 +7,21 @@ const users = require('../models/users');
 // Registration route
 router.post('/', async(req, res) => {
     try{
-        const username = req.body.username;
-        const password = req.body.password;
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
         const phoneNo = req.body.phoneNo;
         const email = req.body.email;
+        const password = req.body.password;
         const userType = req.body.userType;
         
         // Check if all reqd fields are present
-        if (!(username && password && phoneNo && userType))
+        if (!(firstName && password && userType && (email || phoneNo)))
             return res.status(400).json({message: 'Required field (*) cannot be left blank'});
 
-        // Check if phoneNo already exists
-        const existingPhoneNo = await users.findOne({ phoneNo });
-        if (existingPhoneNo)
-            return res.status(409).json({message: 'A user with this phone number already exists'});
-        
-        // Check if username already exists
-        const existingUsername = await users.findOne({ username });
-        if (existingUsername)
-            return res.status(409).json({message: 'This username is aready taken'});
+        // Check if user already exists
+        const existingUser = await users.findOne({$or: [{phoneNo}, {email}], userType});
+        if (existingUser)
+            return res.status(409).json({message: 'A user with this email or phone number already exists'});
 
         // Validate pwd
         const pwdRegex = /^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -36,13 +32,16 @@ router.post('/', async(req, res) => {
         const hashedPwd = await bcrypt.hash(password, 10);
 
         // Create a new user object
+        const _id = "USR" + phoneNo + userType[0];
         const newUser = new users({
-            createdBy: username,
-            updatedBy: username,
-            username,
-            password: hashedPwd,
+            _id,
+            createdBy: _id,
+            updatedBy: _id,
+            firstName,
+            lastName,
             phoneNo,
             email,
+            password: hashedPwd,
             userType,
         });
 

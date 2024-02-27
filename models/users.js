@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const usersSchema = new mongoose.Schema({
+    _id: {
+        type: String
+    },
     isActive: {
         type: Boolean,
         default: true,
@@ -21,25 +24,41 @@ const usersSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    username: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
+    firstName: {
         type: String,
         required: true
+    },
+    lastName: {
+        type: String,
     },
     phoneNo: {
         type: String,
         required: true,
-        unique: true
     },
-    email: String,
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
     userType: {
         type: String,
         enum: ['Superuser', 'Customer', 'Vendor'],
         required: true
+    },
+    incorrectAttemptsCount: {
+        type: Number,
+        default: 0,
+    },
+    suspendedTill: {
+        type: Date,
+        default: Date(0)
+    },
+    isLoggedIn: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -1,25 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
 const authMiddleware = require('../middleware/authMiddleware');
-const sessions = require('../models/sessions');
+const users = require('../models/users');
 
 // Logout route
 router.post('/', authMiddleware, async(req, res) => {
     try {
-        const sessionID = req.sessionID;
+        const _id = req._id;
 
-        // Delete the respective session
-        const deletionResult = await sessions.deleteOne({_id: sessionID});
-        if (deletionResult.deletedCount !== 1)
-            return res.status(404).json({message: 'Session not found'});
+        // set `isLoggedIn` to false for the respective user
+        await users.updateOne(
+            { _id },
+            {$set: {isLoggedIn: false, updatedAt: Date.now()}}
+        );
 
         // Respond with appropriate msg
         res.status(200).json({message: 'User successfully logged out!'});
     } catch(err) {
         // Error handling
-        return res.status(401).json({message: err.message});
+        return res.status(500).json({message: err.message});
     }
 });
 

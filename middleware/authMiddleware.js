@@ -1,6 +1,8 @@
+// Authentication middleware to verify the session token
+
 const jwt = require('jsonwebtoken');
 
-const sessions = require('../models/sessions');
+const users = require('../models/users');
 const config = require('../config/config');
 const secretKey = config.jwtSecret;
 
@@ -14,16 +16,13 @@ async function authMiddleware(req, res, next) {
 
         // Verify the token
         const decodedToken = jwt.verify(token, secretKey);
+        const user = await users.findOne({_id: decodedToken});
+        if (!(user && user.isActive && user.isLoggedIn))
+            return res.status(401).json({message: 'Unauthorized. Session not found'});
 
-        // Check if a session is open using the token
-        const session = await sessions.findOne({ token });
-        if (!session || !session.isActive)
-            return res.status(404).json({message: 'Session not found'});
-
-        // Attach the decoded token and sessionID to the request object for later use
-        req.decodedToken = decodedToken;
-        req.sessionID = session._id;
-
+        // Attach the decoded token to the request object for later use
+        req._id = decodedToken._id;
+        
         next();
     } catch (err) {
         // Error handling

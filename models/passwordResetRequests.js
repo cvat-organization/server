@@ -21,12 +21,25 @@ const passwordResetRequestsSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    userID: {
+        type: String,
+        required: true
+    },
+    phoneNo: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     token: {
         type: String,
         required: true
     },
     expiresAt: {
         type: Date,
+        required: true
     },
 });
 
