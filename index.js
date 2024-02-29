@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 const dbConnect = require('./db/dbConnect');
 const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
@@ -7,6 +9,13 @@ const homepageRouter = require('./routes/homepage');
 const logoutRouter = require('./routes/logout');
 
 const app = express();
+
+//CORS config
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
@@ -27,7 +36,7 @@ app.use((err, req, res, next) => {
 dbConnect().catch(console.error);
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = 4000;
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
