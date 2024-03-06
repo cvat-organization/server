@@ -16,8 +16,8 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 - **Method:** POST
 - **Description:** To register a new user
 - **Request Body:**
-    - `firstName`  *(required, string)*
-    - `lastName`  *(optional, string)*
+    - `fullName`  *(required, string)*
+    - `displayName`  *(required, string)*
     - `phoneNo`  *(required, string)*
     - `email`  *(required, string)*
     - `password`  *(required, string)*
@@ -55,7 +55,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `500 Internal Server Error`
 ---
 ### `/logout`
-- **Method:** post
+- **Method:** POST
 - **Description:** Log out the current user
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)

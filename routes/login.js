@@ -38,10 +38,7 @@ router.post('/', async(req, res) => {
             if (user.incorrectAttemptsCount >= 3){
                 await users.updateOne(
                     {_id: user._id},
-                    {$set: {
-                        suspendedTill: Date.now() + suspendDuration,
-                        updatedAt: Date.now()
-                    }}
+                    {$set: {suspendedTill: Date.now() + suspendDuration}}
                 );
                 return res.status(403).json({message: `Too many incorrect login attempts. Please try again after ${suspendDuration/1000} seconds`});
             }
@@ -51,7 +48,7 @@ router.post('/', async(req, res) => {
                 {_id: user._id},
                 {
                     $inc: {incorrectAttemptsCount: 1},
-                    $set: {isLoggedIn: false, updatedAt: Date.now()}
+                    $set: {isLoggedIn: false}
                 }
             );
             return res.status(401).json({message: 'Invalid password'});
@@ -65,7 +62,6 @@ router.post('/', async(req, res) => {
                 incorrectAttemptsCount: 0,
                 suspendedTill: 0,
                 isLoggedIn: true,
-                updatedAt: Date.now()
             }}
         );
 
