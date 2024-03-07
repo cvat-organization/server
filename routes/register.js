@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 
 const users = require('../models/users');
+const sendEmail = require('../utils/email');
 
 // Registration route
 router.post('/', async(req, res) => {
@@ -40,9 +40,18 @@ router.post('/', async(req, res) => {
         // Write the user object to the db
         const savedUser = await newUser.save();
 
-        // Respond w/ success msg
         // Respond to client w/ success msg
         res.status(201).json({message: 'User registered successfully!'});
+
+        // Send email to user confirming registration
+        sendEmail({
+            from: 'carevigiltracker@gmail.com',
+            to: savedUser.email,
+            subject: 'Successful Account Registration',
+            html: `<p> Your account with CV - Activity Tracker App has been successfully registered and has been assigned the following trackerID:</p>
+            <br> <h2> <strong> ${savedUser.trackerID} </strong> </h2>`,
+        });
+
     } catch(err){
         // Error handling
         res.status(500).json({message: err.message});
