@@ -45,10 +45,10 @@ router.post('/', async(req, res) => {
 
         // Send email to user confirming registration
         sendEmail({
-            from: 'carevigiltracker@gmail.com',
             to: savedUser.email,
             subject: 'Successful Account Registration',
-            html: `<p> Your account with CV - Activity Tracker App has been successfully registered and has been assigned the following trackerID:</p>
+            html: `<h2> Hi ${savedUser.fullName},</h2>
+            <br> <p> Your account with CV - Activity Tracker App has been successfully registered and has been assigned the following trackerID:</p>
             <br> <h2> <strong> ${savedUser.trackerID} </strong> </h2>`,
         });
 

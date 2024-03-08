@@ -16,7 +16,7 @@ async function authMiddleware(req, res, next) {
 
         // Verify the token
         const decodedToken = jwt.verify(token, secretKey);
-        const user = await users.findOne({_id: decodedToken});
+        const user = await users.findOne({_id: decodedToken._id});
         if (!(user && user.isActive && user.isLoggedIn))
             return res.status(401).json({message: 'Unauthorized. Session not found'});
 

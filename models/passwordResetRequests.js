@@ -5,43 +5,52 @@ const passwordResetRequestsSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-    createdBy: {
-        type: String,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedBy: {
-        type: String,
-        required: true
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    },
     userID: {
-        type: String,
-        required: true
-    },
-    phoneNo: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     email: {
         type: String,
+        required: true,
+    },
+    userType: {
+        type: String,
+        enum: ['Superuser', 'Customer', 'Vendor'],
         required: true
     },
-    token: {
+    otp: {
         type: String,
-        required: true
+    },
+    requestedAt: {
+        type: Date,
+        default: Date.now
     },
     expiresAt: {
         type: Date,
-        required: true
     },
+
+    // Audit fields
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
 });
+
+
+// Pre-save middleware
+passwordResetRequestsSchema.pre('save', async function(next) {
+    this.isNew ? this.createdBy = this._id : this.updatedAt = Date.now();
+    this.updatedBy = this._id;
+    next();
+});
+
+// Pre-update middleware
+passwordResetRequestsSchema.pre(/^update/, function(next) {
+    this._update.updatedAt = new Date();
+    this._update.updatedBy = this.getQuery()._id;
+    next();
+});
+
 
 const passwordResetRequests = mongoose.model('passwordResetRequests', passwordResetRequestsSchema);
 

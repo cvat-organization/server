@@ -29,7 +29,7 @@ router.post('/', async(req, res) => {
 
         // Check if user is suspended
         if (Date.now() <= user.suspendedTill.getTime())
-            return res.status(403).json({message: 'Account is temporarily suspended!'})
+            return res.status(403).json({message: `Account is temporarily suspended! Try again in ${user.suspendedTill.getTime() - Date.now()} seconds`})
 
         // Compare pwd with the hashed pwd in the db
         const isPwdValid = await bcrypt.compare(password,user.password);
@@ -68,6 +68,7 @@ router.post('/', async(req, res) => {
         // Generate & sign a JWT and send it to the client
         const token = jwt.sign({_id: user._id}, secretKey);
         res.status(200).json({ token });
+    
     } catch(err){
         // Error handling
         return res.status(500).json({message: err.message});
