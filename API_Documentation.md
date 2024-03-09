@@ -44,7 +44,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `password`  *(required, string)*
     - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
 - **Response:**
-    - `200 OK` : Successfull login.  
+    - `200 OK` : Successful login.  
     **Response object :**
         - *token* : JWT session token
     - `400 Bad Request` : Invalid request body  
@@ -182,6 +182,30 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
         - *message*
     - `401 Unauthorized` : Invalid password   
     **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/oauth-google`
+- **Method:** POST
+- **Description:** To register/sign-in a user using their Google account
+- **Request Headers:**
+    - `authorization`  *(required, string)* : idToken (Google idToken)
+- **Request Body:**
+    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
+- **Response:**
+    - `200 OK` : Successful login.  
+    **Response object :**
+        - *token* : JWT session token
+    - `201 Created` : User registered successfully  
+    **Response object :**
+        - *token* : JWT session token
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
         - *message*
     - `500 Internal Server Error`  
     **Response object :** 

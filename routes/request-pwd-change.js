@@ -22,7 +22,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
         // Ensure that pwd is correct
         const user = await users.findOne({ _id });
-        const isPwdValid = await bcrypt.compare(password, user.password);
+        const isPwdValid = user.password ? await bcrypt.compare(password, user.password) : false;
         if (!isPwdValid)
             return res.status(401).json({message: 'Invalid password'});
 

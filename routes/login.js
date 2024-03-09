@@ -33,38 +33,27 @@ router.post('/', async(req, res) => {
             return res.status(403).json({message: `Account is temporarily suspended! Try again in ${remainingSuspensionTime} seconds`})
 
         // Compare pwd with the hashed pwd in the db
-        const isPwdValid = await bcrypt.compare(password,user.password);
+        const isPwdValid = user.password ? await bcrypt.compare(password,user.password) : false;
         if (!isPwdValid){
             // If `incorrectAttemptsCount` is already at 3, suspend the user
             if (user.incorrectAttemptsCount >= 3){
-                await users.updateOne(
-                    {_id: user._id},
-                    {$set: {suspendedTill: Date.now() + suspendDuration}}
-                );
+                user.suspendedTill = Date.now() + suspendDuration;
+                await user.save();
                 return res.status(403).json({message: `Too many incorrect login attempts. Please try again after ${suspendDuration/1000} seconds`});
             }
 
-            // Else, increment `incorrectAttemptsCount` & reset `isLoggedIn` to false
-            await users.updateOne(
-                {_id: user._id},
-                {
-                    $inc: {incorrectAttemptsCount: 1},
-                    $set: {isLoggedIn: false}
-                }
-            );
+            // Else, increment `incorrectAttemptsCount`
+            user.incorrectAttemptsCount++;
+            await user.save();
             return res.status(401).json({message: 'Invalid password'});
         }
 
         // Credentials are valid
         // Reset `incorrectAttemptsCount` to 0, suspendedTill to 0, set `isLoggedIn` to true
-        await users.updateOne(
-            {_id: user._id},
-            {$set: {
-                incorrectAttemptsCount: 0,
-                suspendedTill: 0,
-                isLoggedIn: true,
-            }}
-        );
+        user.incorrectAttemptsCount = 0;
+        user.suspendedTill = 0;
+        user.isLoggedIn = true;
+        await user.save();
 
         // Generate & sign a JWT and send it to the client
         const token = jwt.sign({_id: user._id}, secretKey);

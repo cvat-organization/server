@@ -11,6 +11,7 @@ const requestOTPRouter = require('./routes/request-otp');
 const verifyOTPRouter = require('./routes/verify-otp');
 const newPwdRouter = require('./routes/new-password');
 const requestPwdChangeRouter = require('./routes/request-pwd-change');
+const oAuthGoogleRouter = require('./routes/oauth-google');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use('/request-otp', requestOTPRouter);
 app.use('/verify-otp', verifyOTPRouter);
 app.use('/new-password', newPwdRouter);
 app.use('/request-pwd-change', requestPwdChangeRouter);
+app.use('/oauth-google', oAuthGoogleRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
