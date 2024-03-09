@@ -20,9 +20,9 @@ router.post('/', async(req, res) => {
             return res.status(400).json({message: 'Required field (*) cannot be left blank'});
 
         // Check if user already exists
-        const existingUser = await users.findOne({email, userType});
+        const existingUser = await users.findOne({$or: [{phoneNo}, {email}], userType});
         if (existingUser)
-            return res.status(409).json({message: 'A user with this email already exists'});
+            return res.status(409).json({message: 'A user with this email or phone number already exists'});
 
         // Hash the pwd before writing to db
         const hashedPwd = await bcrypt.hash(password, 10);

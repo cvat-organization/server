@@ -28,8 +28,9 @@ router.post('/', async(req, res) => {
             return res.status(404).json({message: 'User not found'});
 
         // Check if user is suspended
-        if (Date.now() <= user.suspendedTill.getTime())
-            return res.status(403).json({message: `Account is temporarily suspended! Try again in ${user.suspendedTill.getTime() - Date.now()} seconds`})
+        const remainingSuspensionTime = Math.floor((user.suspendedTill.getTime() - Date.now())/1000);
+        if (remainingSuspensionTime > 0)
+            return res.status(403).json({message: `Account is temporarily suspended! Try again in ${remainingSuspensionTime} seconds`})
 
         // Compare pwd with the hashed pwd in the db
         const isPwdValid = await bcrypt.compare(password,user.password);
