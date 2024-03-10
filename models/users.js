@@ -47,11 +47,47 @@ const usersSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    friends: {
+    followers: {
         type: Array,
     },
-    incomingFriendRequests: {
+    incomingFollowRequests: {
         type: Array,
+    },
+    following: {
+        type: Array,
+    },
+    bio: {
+        type: String,
+    },
+    website: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
+    birthYear: {
+        type: Number,
+    },
+    metric: {
+        type: String,
+    },
+    height: {
+        type: Number,
+    },
+    weight: {
+        type: Number,
+    },
+    stepLengthCM: {
+        type: Number,
+    },
+    subscriptionStatus: {
+        type: String,
+    },
+    profilePicture: {
+        type: String,
     },
 
     // Audit fields

@@ -210,3 +210,74 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*
+---
+### `/get-user-profile`
+- **Method:** GET
+- **Description:** To retrieve a user's profile data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Successful retrieval  
+    **Response object :**
+        - *message*
+        - *fullName*
+        - *displayName*
+        - *trackerID*
+        - *email*
+        - *phoneNo*
+        - *followers (Array)*
+        - *incomingFollowRequests (Array)*
+        - *following (Array)*
+        - *bio*
+        - *website*
+        - *location*
+        - *gender*
+        - *birthYear*
+        - *metric*
+        - *height*
+        - *weight*
+        - *stepLengthCM*
+        - *subscriptionStatus*
+        - *profilePicture*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/update-user-profile`
+- **Method:** PUT
+- **Description:** To update a user's profile data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `fullName`  *(required, string)*
+    - `displayName`  *(required, string)*
+    - `phoneNo`  *(optional, string)*
+    - `bio`  *(optional, string)*
+    - `website`  *(optional, string)*
+    - `location`  *(optional, string)*
+    - `gender`  *(optional, string)*
+    - `birthYear`  *(optional, string)*
+    - `metric`  *(optional, string)*
+    - `height`  *(optional, string)*
+    - `weight`  *(optional, string)*
+    - `stepLengthCM`  *(optional, string)*
+    - `profilePicture`  *(optional, string)*
+- **Response:**
+    - `200 OK` : User profile data updated successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
