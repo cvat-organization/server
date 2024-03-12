@@ -23,7 +23,7 @@ router.post('/', async(req, res) => {
             return res.status(400).json({message: 'Required field cannot be left blank'});
 
         // Ensure user exists
-        const user = await users.findOne({$or: [{phoneNo}, {email}], userType});
+        const user = await users.findOne(phoneNo? {phoneNo, userType} : {email, userType});
         if (!user || !user.isActive)
             return res.status(404).json({message: 'User not found'});
 

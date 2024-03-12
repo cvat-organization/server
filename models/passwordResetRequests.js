@@ -32,8 +32,8 @@ const passwordResetRequestsSchema = new mongoose.Schema({
     // Audit fields
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'passwordResetRequests' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'passwordResetRequests' },
 });
 
 

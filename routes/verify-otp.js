@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
             return res.status(401).json({message: 'Invalid OTP'});
 
         // Check if OTP has expired
-        else if (Date.now >= passwordResetRequest.expiresAt.getTime())
+        else if (Date.now() >= passwordResetRequest.expiresAt.getTime())
             return res.status(401).json({message: 'OTP has expired'});
 
         // If valid, generate a JWT Token
