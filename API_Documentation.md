@@ -219,25 +219,25 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 - **Response:**
     - `200 OK` : Successful retrieval  
     **Response object :**
-        - *message*
-        - *fullName*
-        - *displayName*
-        - *trackerID*
-        - *email*
-        - *phoneNo*
+        - *message (String)*
+        - *fullName (String)*
+        - *displayName (String)*
+        - *trackerID (String)*
+        - *email (String)*
+        - *phoneNo (String)*
         - *followers (Array)*
         - *incomingFollowRequests (Array)*
         - *following (Array)*
-        - *bio*
-        - *website*
-        - *location*
-        - *gender*
-        - *birthYear*
-        - *metric*
-        - *height*
-        - *weight*
-        - *stepLengthCM*
-        - *subscriptionStatus*
+        - *bio (String)*
+        - *website (String)*
+        - *location (String)*
+        - *gender (String)*
+        - *birthYear (Number)*
+        - *metric (String)*
+        - *height (Number)*
+        - *weight (Number)*
+        - *stepLengthCM (Number)*
+        - *subscriptionStatus (String)*
         - *profilePicture*
     - `400 Bad Request` : Invalid request headers/body  
     **Response object :** 
@@ -262,11 +262,11 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `website`  *(optional, string)*
     - `location`  *(optional, string)*
     - `gender`  *(optional, string)*
-    - `birthYear`  *(optional, string)*
+    - `birthYear`  *(optional, Number)*
     - `metric`  *(optional, string)*
-    - `height`  *(optional, string)*
-    - `weight`  *(optional, string)*
-    - `stepLengthCM`  *(optional, string)*
+    - `height`  *(optional, Number)*
+    - `weight`  *(optional, Number)*
+    - `stepLengthCM`  *(optional, Number)*
     - `profilePicture`  *(optional, string)*
 - **Response:**
     - `200 OK` : User profile data updated successfully  
