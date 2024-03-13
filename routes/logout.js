@@ -12,7 +12,7 @@ router.post('/', authMiddleware, async(req, res) => {
         // set `isLoggedIn` to false for the respective user
         await users.updateOne(
             { _id },
-            {$set: {isLoggedIn: false, updatedAt: Date.now()}}
+            {$set: {isLoggedIn: false}}
         );
 
         // Respond with appropriate msg

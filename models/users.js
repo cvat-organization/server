@@ -1,39 +1,27 @@
 const mongoose = require('mongoose');
 
+const generateTrackerID = () => 'u' + Date.now();
+
 const usersSchema = new mongoose.Schema({
-    _id: {
-        type: String
-    },
     isActive: {
         type: Boolean,
         default: true,
     },
-    createdBy: {
+    trackerID: {
+        type: String,
+        default: generateTrackerID,
+        unique: true,
+    },
+    fullName: {
         type: String,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedBy: {
+    displayName: {
         type: String,
         required: true
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    },
-    firstName: {
-        type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
     },
     phoneNo: {
         type: String,
-        required: true,
     },
     email: {
         type: String,
@@ -41,7 +29,6 @@ const usersSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
     },
     userType: {
         type: String,
@@ -54,12 +41,75 @@ const usersSchema = new mongoose.Schema({
     },
     suspendedTill: {
         type: Date,
-        default: Date(0)
+        default: new Date(0)
     },
     isLoggedIn: {
         type: Boolean,
         default: false
-    }
+    },
+    followers: {
+        type: Array,
+    },
+    incomingFollowRequests: {
+        type: Array,
+    },
+    following: {
+        type: Array,
+    },
+    bio: {
+        type: String,
+    },
+    website: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
+    birthYear: {
+        type: Number,
+    },
+    metric: {
+        type: String,
+    },
+    height: {
+        type: Number,
+    },
+    weight: {
+        type: Number,
+    },
+    stepLengthCM: {
+        type: Number,
+    },
+    subscriptionStatus: {
+        type: String,
+    },
+    profilePicture: {
+        type: String,
+    },
+
+    // Audit fields
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' }
+});
+
+
+// Pre-save middleware
+usersSchema.pre('save', async function(next) {
+    this.isNew ? this.createdBy = this._id : this.updatedAt = Date.now();
+    this.updatedBy = this._id;
+    next();
+});
+
+// Pre-update middleware
+usersSchema.pre(/^update/, function(next) {
+    this._update.updatedAt = new Date();
+    this._update.updatedBy = this.getQuery()._id;
+    next();
 });
 
 const users = mongoose.model('users', usersSchema);

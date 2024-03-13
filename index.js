@@ -7,12 +7,19 @@ const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
 const homepageRouter = require('./routes/homepage');
 const logoutRouter = require('./routes/logout');
+const requestOTPRouter = require('./routes/request-otp');
+const verifyOTPRouter = require('./routes/verify-otp');
+const newPwdRouter = require('./routes/new-password');
+const requestPwdChangeRouter = require('./routes/request-pwd-change');
+const oAuthGoogleRouter = require('./routes/oauth-google');
+const getUserProfileRouter = require('./routes/get-user-profile');
+const updateUserProfileRouter = require('./routes/update-user-profile');
 
 const app = express();
 
 //CORS config
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://192.168.0.108:8081'],
     credentials: true
 }
 app.use(cors(corsOptions));
@@ -25,6 +32,13 @@ app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/homepage', homepageRouter);
 app.use('/logout', logoutRouter);
+app.use('/request-otp', requestOTPRouter);
+app.use('/verify-otp', verifyOTPRouter);
+app.use('/new-password', newPwdRouter);
+app.use('/request-pwd-change', requestPwdChangeRouter);
+app.use('/oauth-google', oAuthGoogleRouter);
+app.use('/get-user-profile', getUserProfileRouter);
+app.use('/update-user-profile', updateUserProfileRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

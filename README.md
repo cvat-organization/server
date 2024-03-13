@@ -12,9 +12,13 @@ or just
 npm i
 ```
 
-The entry point is defined as `index.js` , so run:
+To start the server, run:
+```sh
+npm start
+```
+or,
 ```sh
 node index.js
 ```
-
+Since the entry point is defined as `index.js`.
 

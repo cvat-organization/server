@@ -16,17 +16,25 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 - **Method:** POST
 - **Description:** To register a new user
 - **Request Body:**
-    - `firstName`  *(required, string)*
-    - `lastName`  *(optional, string)*
+    - `fullName`  *(required, string)*
+    - `displayName`  *(required, string)*
     - `phoneNo`  *(required, string)*
     - `email`  *(required, string)*
     - `password`  *(required, string)*
     - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
 - **Respone:**
-    - `201 Created` : User registered successfully
-    - `400 Bad Request` : Invalid request body
-    - `409 Conflict` : Existing phoneNo/username
-    - `500 Internal Server Error`
+    - `201 Created` : User registered successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request body  
+    **Response object :** 
+        - *message*
+    - `409 Conflict` : Existing phoneNo/username  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
 ---
 ### `/login`
 - **Method:** POST
@@ -36,12 +44,24 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `password`  *(required, string)*
     - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
 - **Response:**
-    - `200 OK` : Successfull login. **Response object - {`token`: &lt;token *string*&gt;}**
-    - `400 Bad Request` : Invalid request body
-    - `401 Unauthorized` : Invalid username or password
-    - `403 Forbidden` : User temporarily suspended
-    - `404 Not Found` : User not found
-    - `500 Internal Server Error`
+    - `200 OK` : Successful login.  
+    **Response object :**
+        - *token* : JWT session token
+    - `400 Bad Request` : Invalid request body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Invalid username or password  
+    **Response object :** 
+        - *message*
+    - `403 Forbidden` : User temporarily suspended  
+    **Response object :** 
+        - *message*
+    - `404 Not Found` : User not found  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
 ---
 ### `/homepage` - Dummy, in development.
 - **Method:** GET
@@ -49,18 +69,215 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
 - **Response:**
-    - `200 OK` : Homepage data retrieved successfully
-    - `400 Bad Request` : Invalid request body (Token missing?)
-    - `401 Unauthorized` : Unauthenticated token / Session not found
-    - `500 Internal Server Error`
+    - `200 OK` : Homepage data retrieved successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request headers (Token missing?)  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Unauthenticated token / Session not found  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
 ---
 ### `/logout`
-- **Method:** post
+- **Method:** POST
 - **Description:** Log out the current user
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
 - **Response:**
-    - `200 OK` : User logged out successfully
-    - `400 Bad Request` : Invalid request body (Token missing?)
-    - `401 Unauthorized` : Unauthenticated token / Session not found
-    - `500 Internal Server Error`
+    - `200 OK` : User logged out successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request headers (Token missing?)  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Unauthenticated token / Session not found  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/request-otp`
+- **Method:** POST
+- **Description:** To request an OTP for pwd reset, **without being logged in**
+- **Request Body:**
+    - `email`  *(required, string)*
+    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
+- **Response:**
+    - `200 OK` : OTP has been sent to the given email address.  
+    ***Response object :***  
+        - *message*
+    - `400 Bad Request` : Invalid request body  
+    **Response object :** 
+        - *message*
+    - `403 Forbidden` : User temporarily suspended  
+    **Response object :** 
+        - *message*
+    - `404 Not Found` : Email not found in database  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/verify-otp`
+- **Method:** POST
+- **Description:** To verify an OTP that was requested for password reset
+- **Request Body:**
+    - `email`  *(required, string)*
+    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
+    - `otp`  *(required, string)*
+- **Response:**
+    - `200 OK` : OTP verified and token is sent to client  
+    ***Response object :***  
+        - *token* : JWT Token to be included in request header to `/new-password`
+    - `400 Bad Request` : Invalid request body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Invalid or expired OTP   
+    **Response object :** 
+        - *message*
+    - `404 Not Found` : OTP request not found in database  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/new-password`
+- **Method:** POST
+- **Description:** To change a user's password
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token)
+- **Request Body:**
+    - `password`  *(required, string)* : New password for the account
+- **Response:**
+    - `201 OK` : Pwd successfully changed  
+    ***Response object :***  
+        - *message*`
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Invalid token   
+    **Response object :** 
+        - *message*
+---
+### `/request-pwd-change`
+- **Method:** POST
+- **Description:** To request for password change, **after being logged in**
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `password`  *(required, string)* : Existing or old password for the account
+- **Response:**
+    - `200 OK` : Old pwd verified and token is sent to client  
+    ***Response object :***  
+        - *token* : JWT Token to be included in request header to `/new-password`
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Invalid password   
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/oauth-google`
+- **Method:** POST
+- **Description:** To register/sign-in a user using their Google account
+- **Request Headers:**
+    - `authorization`  *(required, string)* : idToken (Google idToken)
+- **Request Body:**
+    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
+- **Response:**
+    - `200 OK` : Successful login.  
+    **Response object :**
+        - *token* : JWT session token
+    - `201 Created` : User registered successfully  
+    **Response object :**
+        - *token* : JWT session token
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/get-user-profile`
+- **Method:** GET
+- **Description:** To retrieve a user's profile data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Successful retrieval  
+    **Response object :**
+        - *message (String)*
+        - *fullName (String)*
+        - *displayName (String)*
+        - *trackerID (String)*
+        - *email (String)*
+        - *phoneNo (String)*
+        - *followers (Array)*
+        - *incomingFollowRequests (Array)*
+        - *following (Array)*
+        - *bio (String)*
+        - *website (String)*
+        - *location (String)*
+        - *gender (String)*
+        - *birthYear (Number)*
+        - *metric (String)*
+        - *height (Number)*
+        - *weight (Number)*
+        - *stepLengthCM (Number)*
+        - *subscriptionStatus (String)*
+        - *profilePicture*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/update-user-profile`
+- **Method:** PUT
+- **Description:** To update a user's profile data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `fullName`  *(required, string)*
+    - `displayName`  *(required, string)*
+    - `phoneNo`  *(optional, string)*
+    - `bio`  *(optional, string)*
+    - `website`  *(optional, string)*
+    - `location`  *(optional, string)*
+    - `gender`  *(optional, string)*
+    - `birthYear`  *(optional, Number)*
+    - `metric`  *(optional, string)*
+    - `height`  *(optional, Number)*
+    - `weight`  *(optional, Number)*
+    - `stepLengthCM`  *(optional, Number)*
+    - `profilePicture`  *(optional, string)*
+- **Response:**
+    - `200 OK` : User profile data updated successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
