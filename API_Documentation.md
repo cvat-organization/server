@@ -11,6 +11,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 
 
 ---
+---
 ## Endpoints
 ### `/register`
 - **Method:** POST
@@ -281,3 +282,386 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*
+---
+### `/get-activities-parameters`
+- **Method:** GET
+- **Description:** To retrieve all the defined activities & their parameters
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Successully retrieved all pre-defined activities & their parameters  
+    **Response object :**
+        - *definedActivitiesParameters* : *(Array of Objects)*
+            ```js
+            [
+                {
+                    isActive: Boolean,
+                    activityName: String,
+                    isTrackable: Boolean,
+                    activityParameters: Object,    // See `definedActivities.json` for the params and data types
+                    subActivities: Array,
+                },
+                ...
+            ]
+            ```
+            ***See [Example](#get-activities-parameters-1)***
+    - `400 Bad Request` : Invalid request headers  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : No pre-defined activities found  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/get-activities-history`
+- **Method:** GET
+- **Description:** To retrieve a user's complete activities history
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Activities history retrieved successfully  
+    **Response object :**
+        - *message*
+        - *trackableActivitesHistory  (Array)*
+        - *untrackableActivitesHistory  (Array)*
+            ```js
+            // trackableActivitiesHistory Array
+            [
+                {
+                    activityName: String,
+                    subActivity: String,    // Optional, may be undefined
+                    startTime: String,
+                    endTime: String,
+                    parameters: Object,
+                    comments: String,   // Optional, may be undefined
+                }
+                ...
+            ]
+            ```
+            ***See [Example](#get-activities-history-1)***
+    - `400 Bad Request` : Invalid request headers  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/save-trackable-activity`
+- **Method:** PUT
+- **Description:** To save a trackable activity
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `activityName`  *(required, string)*
+    - `subActivity`  *(if the activity definition contains subActivities: required & must be one among the defined subActivities ; else: optional, string)*
+    - `startTime`  *(required, string)* : Must follow ISO 8601 Standard
+    - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
+    - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
+    - `comments`  *(optional, string)*  
+    ***See [Example](#save-trackable-activity-1)***
+- **Response:**
+    - `200 OK` : Activity saved successfully  
+    **Response object :**
+        - *message*
+        - *activityHistoryID (String)*  : Store this to delete/edit the activity in future
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : Activity is not one among the pre-defined ones  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/save-untrackable-activity`
+- **Method:** PUT
+- **Description:** To save an untrackable activity
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `activityName`  *(required, string)*
+    - `subActivity`  *(if the activity definition contains subActivities: required & must be one among the defined subActivities ; else: optional, string)*
+    - `startTime`  *(required, string)* : Must follow ISO 8601 Standard
+    - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
+    - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
+    - `comments`  *(optional, string)*  
+    ***See [Example](#save-untrackable-activity-1)***
+- **Response:**
+    - `200 OK` : Activity saved successfully  
+    **Response object :**
+        - *message*
+        - *activityHistoryID (String)*  : Store this to delete/edit the activity in future
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : Activity is not one among the pre-defined ones   
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+## Sample Requests / Responses
+
+### `/get-activities-parameters`
+- **Response Code :**  `200 OK`
+```json
+// JSON
+
+{
+    "definedActivitiesParameters": [
+        {
+            "_id": "65f17059817e57031fe7e760",
+            "isActive": true,
+            "activityName": "Walk",
+            "isTrackable": true,
+            "activityParameters": {
+                "map": "Object",        // Map is actually of type Array, but js return "object" for `typeof [1,2,3]`
+                "avgSpeed": "Number",
+                "steps": "Number",
+                "distance": "Number",
+                "calories": "Number",
+                "elevationGain": "Number"
+            },
+            "subActivities": [],
+            "createdAt": "2024-03-13T09:22:33.223Z",
+            "updatedAt": "2024-03-13T09:22:33.224Z",
+            "__v": 0
+        },
+        {
+            "_id": "65f17059817e57031fe7e761",
+            "isActive": true,
+            "activityName": "Run",
+            "isTrackable": true,
+            "activityParameters": {
+                "map": "Object",
+                "avgSpeed": "Number",
+                "steps": "Number",
+                "distance": "Number",
+                "calories": "Number",
+                "elevationGain": "Number"
+            },
+            "subActivities": [],
+            "createdAt": "2024-03-13T09:22:33.224Z",
+            "updatedAt": "2024-03-13T09:22:33.224Z",
+            "__v": 0
+        },
+        {
+            "_id": "65f17059817e57031fe7e762",
+            "isActive": true,
+            "activityName": "Hike",
+            "isTrackable": true,
+            "activityParameters": {
+                "map": "Object",
+                "avgSpeed": "Number",
+                "steps": "Number",
+                "distance": "Number",
+                "calories": "Number",
+                "elevationGain": "Number"
+            },
+            "subActivities": [],
+            "createdAt": "2024-03-13T09:22:33.224Z",
+            "updatedAt": "2024-03-13T09:22:33.224Z",
+            "__v": 0
+        },
+        {
+            "_id": "65f17059817e57031fe7e763",
+            "isActive": true,
+            "activityName": "Ride",
+            "isTrackable": true,
+            "activityParameters": {
+                "map": "Object",
+                "avgSpeed": "Number",
+                "distance": "Number",
+                "calories": "Number",
+                "elevationGain": "Number"
+            },
+            "subActivities": [],
+            "createdAt": "2024-03-13T09:22:33.225Z",
+            "updatedAt": "2024-03-13T09:22:33.225Z",
+            "__v": 0
+        },
+        {
+            "_id": "65f17059817e57031fe7e764",
+            "isActive": true,
+            "activityName": "Gym",
+            "isTrackable": false,
+            "activityParameters": {
+                "weight": "Number",
+                "sets": "Number",
+                "repsPerSet": "Number"
+            },
+            "subActivities": [
+                "Barbell Curls",
+                "Barbell Rows",
+                "Bench Press",
+                "Bent-Over Rows",
+                "Bicep Curls / Dumbell Curls Dips",
+                "Deadlifts",
+                "Leg Curls",
+                "Squats",
+                "Agility Ladder Drills",
+                "Box Jumps",
+                "High Knees",
+                "Jump Rope",
+                "Jump Squats"
+            ],
+            "createdAt": "2024-03-13T09:22:33.225Z",
+            "updatedAt": "2024-03-13T09:22:33.225Z",
+            "__v": 0
+        },
+        {
+            "_id": "65f17059817e57031fe7e765",
+            "isActive": true,
+            "activityName": "Yoga",
+            "isTrackable": false,
+            "activityParameters": {
+                "count": "Number"
+            },
+            "subActivities": [],
+            "createdAt": "2024-03-13T09:22:33.225Z",
+            "updatedAt": "2024-03-13T09:22:33.225Z",
+            "__v": 0
+        }
+    ]
+}
+```
+---
+### `/get-activities-history`
+- **Response Code :**  `200 OK`
+```json
+// JSON
+
+{
+    "message": "Activites' (trackable & untrackable) history retrieved successfully",
+    "trackableActivitesHistory": [
+        {
+            "activityName": "Run",
+            "startTime": "2022-01-01T00:00:00.000Z",
+            "endTime": "2022-01-01T01:00:00.000Z",
+            "parameters": {
+                "map": [
+                    [
+                        40.235,
+                        40.357
+                    ],
+                    [
+                        40.245,
+                        40.367
+                    ]
+                ],
+                "avgSpeed": 15,
+                "steps": 20000,
+                "distance": 15,
+                "calories": 1000,
+                "elevationGain": 50
+            },
+            "comments": "Ran 15km today",
+            "_id": "65f170b842b3357617800105"
+        },
+        {
+            "activityName": "Walk",
+            "startTime": "2022-01-01T02:00:00.000Z",
+            "endTime": "2022-01-01T02:30:00.000Z",
+            "parameters": {
+                "map": [
+                    [
+                        50.235,
+                        50.357
+                    ],
+                    [
+                        50.245,
+                        50.367
+                    ]
+                ],
+                "avgSpeed": 5.5,
+                "steps": 4000,
+                "distance": 2.75,
+                "calories": 300,
+                "elevationGain": 10
+            },
+            "comments": "Walked in the park",
+            "_id": "65f172a8d633c8d94dd1d4f5"
+        }
+    ],
+    "untrackableActivitiesHistory": [
+        {
+            "activityName": "Gym",
+            "subActivity": "Bench Press",
+            "startTime": "2022-01-01T03:00:00.000Z",
+            "endTime": "2022-01-01T03:30:00.000Z",
+            "parameters": {
+                "weight": 15,
+                "sets": 3,
+                "repsPerSet": 7
+            },
+            "comments": "Did 3 sets of 15 reps",
+            "_id": "65f172b5d633c8d94dd1d4fb"
+        },
+        {
+            "activityName": "Gym",
+            "subActivity": "Squats",
+            "startTime": "2022-01-01T03:30:00.000Z",
+            "endTime": "2022-01-01T04:00:00.000Z",
+            "parameters": {
+                "weight": 10,
+                "sets": 3,
+                "repsPerSet": 10
+            },
+            "comments": "Did 3 sets of 10 reps",
+            "_id": "65f172bfd633c8d94dd1d502"
+        }
+    ]
+}
+```
+---
+### `/save-trackable-activity`
+- **Request Body :**
+```json
+// JSON
+
+{
+    "activityName": "Run",
+    "startTime": "2022-01-01T00:00:00Z",
+    "endTime": "2022-01-01T01:00:00Z",
+    "map": [[40.235,40.357], [40.245,40.367]],
+    "avgSpeed": 15,
+    "steps": 20000,
+    "distance": 15,
+    "calories": 1000,
+    "elevationGain": 50,
+    "comments": "Ran 15km today"
+}
+```
+---
+### `/save-untrackable-activity`
+- **Request Body :**
+```json
+// JSON
+
+{
+    "activityName": "Gym",
+    "subActivity": "Bench Press",
+    "startTime": "2022-01-01T03:00:00Z",
+    "endTime": "2022-01-01T03:30:00Z",
+    "weight": 15,
+    "sets": 3,
+    "repsPerSet": 7,
+    "comments": "Did 3 sets of 15 reps"
+}
+```

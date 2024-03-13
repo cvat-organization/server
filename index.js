@@ -14,6 +14,10 @@ const requestPwdChangeRouter = require('./routes/request-pwd-change');
 const oAuthGoogleRouter = require('./routes/oauth-google');
 const getUserProfileRouter = require('./routes/get-user-profile');
 const updateUserProfileRouter = require('./routes/update-user-profile');
+const getActivitiesHistoryRouter = require('./routes/get-activities-history');
+const saveTrackableActivityRouter = require('./routes/save-trackable-activity');
+const saveUntrackableActivityRouter = require('./routes/save-untrackable-activity');
+const getActivitiesParametersRouter = require('./routes/get-activities-parameters');
 
 const app = express();
 
@@ -39,6 +43,10 @@ app.use('/request-pwd-change', requestPwdChangeRouter);
 app.use('/oauth-google', oAuthGoogleRouter);
 app.use('/get-user-profile', getUserProfileRouter);
 app.use('/update-user-profile', updateUserProfileRouter);
+app.use('/get-activities-history', getActivitiesHistoryRouter);
+app.use('/save-trackable-activity', saveTrackableActivityRouter);
+app.use('/save-untrackable-activity', saveUntrackableActivityRouter);
+app.use('/get-activities-parameters', getActivitiesParametersRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

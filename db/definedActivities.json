@@ -1,0 +1,80 @@
+[
+    {
+        "activityName": "Walk",
+        "isTrackable": true,
+        "activityParameters": {
+            "map": "Object",
+            "avgSpeed": "Number",
+            "steps": "Number",
+            "distance": "Number",
+            "calories": "Number",
+            "elevationGain": "Number"
+        }
+    },
+    {
+        "activityName": "Run",
+        "isTrackable": true,
+        "activityParameters": {
+            "map": "Object",
+            "avgSpeed": "Number",
+            "steps": "Number",
+            "distance": "Number",
+            "calories": "Number",
+            "elevationGain": "Number"
+        }
+    },
+    {
+        "activityName": "Hike",
+        "isTrackable": true,
+        "activityParameters": {
+            "map": "Object",
+            "avgSpeed": "Number",
+            "steps": "Number",
+            "distance": "Number",
+            "calories": "Number",
+            "elevationGain": "Number"
+        }
+    },
+    {
+        "activityName": "Ride",
+        "isTrackable": true,
+        "activityParameters": {
+            "map": "Object",
+            "avgSpeed": "Number",
+            "distance": "Number",
+            "calories": "Number",
+            "elevationGain": "Number"
+        }
+    },
+    {
+        "activityName": "Gym",
+        "isTrackable": false,
+        "activityParameters": {
+            "weight": "Number",
+            "sets": "Number",
+            "repsPerSet": "Number"
+        },
+        "subActivities": [
+            "Barbell Curls",
+            "Barbell Rows",
+            "Bench Press",
+            "Bent-Over Rows",
+            "Bicep Curls / Dumbell Curls Dips",
+            "Deadlifts",
+            "Leg Curls",
+            "Squats",
+            "Agility Ladder Drills",
+            "Box Jumps",
+            "High Knees",
+            "Jump Rope",
+            "Jump Squats"
+        ]
+    },
+    {
+        "activityName": "Yoga",
+        "isTrackable": false,
+        "activityParameters": {
+            "count": "Number"
+        }
+    }
+]
