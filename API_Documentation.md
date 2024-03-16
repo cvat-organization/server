@@ -1,19 +1,33 @@
 <h1 style="text-align: center;"> API Documentation </h1>
 
-## Authentication
-The authentication mechanism used in the provided API involces JSON Web Tokens (JWT) for user authentication. Here's an overview of how it works:
 
-1. **User Registration:** When a user registers, their credentials (phone/email, password, etc.) are securely stored in the database after being hashed.
+<h1 style="text-align: center;"> Index </h1>
 
-2. **User Login:** Upon successful login, the server generates a JWT containing information about the user (such as user ID) and signs it using a secret key (stored in the server's ENV variables).
+### /auth/ - Authentication
+- [`/auth/register`](#authregister)
+- [`/auth/login`](#authlogin)   
+- [`/auth/oauth/oauth-google`](#authoauthoauth-google)
+- [`/auth/account/request-otp`](#authaccountrequest-otp)
+- [`/auth/account/verify-otp`](#authaccountverify-otp)
+- [`/auth/account/new-password`](#authaccountnew-password)
+### /profile/ - User Profile Actions
+- [`/profile/get-user-profile`](#profileget-user-profile)
+- [`/profile/update-user-profile`](#profileupdate-user-profile)
+- [`/profile/request-pwd-change`](#profilerequest-pwd-change)
+- [`/profile/logout`](#profilelogout)
+### /activities - Activities Related
+- [`/activities/get-defined-activities`](#activitiesget-defined-activities)
+- [`/activities/get-activities-history`](#activitiesget-activities-history)
+- [`/activities/save-trackable-activity`](#activitiessave-trackable-activity)
+- [`/activities/save-untrackable-activity`](#activitiessave-untrackable-activity)
+- [`/activities/delete-trackable-activity`](#activitiesdelete-trackable-activity)
+- [`/activities/delete-untrackable-activity`](#activitiesdelete-untrackable-activity)
 
-3. **Token Verification:** The client includes the JWT in all subsequent request headers. The server verifies the token's signature using the secret key, and sends the requested data back to the client if verified; otherwise, it denies access.
 
+#
+<h1 style="text-align: center;"> Endpoints </h1>
 
----
----
-## Endpoints
-### `/register`
+### `/auth/register`
 - **Method:** POST
 - **Description:** To register a new user
 - **Request Body:**
@@ -37,7 +51,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/login`
+### `/auth/login`
 - **Method:** POST
 - **Description:** To log in an existing user
 - **Request Body:**
@@ -83,7 +97,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/logout`
+### `/profile/logout`
 - **Method:** POST
 - **Description:** Log out the current user
 - **Request Headers:**
@@ -102,7 +116,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/request-otp`
+### `/auth/account/request-otp`
 - **Method:** POST
 - **Description:** To request an OTP for pwd reset, **without being logged in**
 - **Request Body:**
@@ -125,7 +139,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/verify-otp`
+### `/auth/account/verify-otp`
 - **Method:** POST
 - **Description:** To verify an OTP that was requested for password reset
 - **Request Body:**
@@ -149,7 +163,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/new-password`
+### `/auth/account/new-password`
 - **Method:** POST
 - **Description:** To change a user's password
 - **Request Headers:**
@@ -167,7 +181,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/request-pwd-change`
+### `/profile/request-pwd-change`
 - **Method:** POST
 - **Description:** To request for password change, **after being logged in**
 - **Request Headers:**
@@ -188,7 +202,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/oauth-google`
+### `/auth/oauth/oauth-google`
 - **Method:** POST
 - **Description:** To register/sign-in a user using their Google account
 - **Request Headers:**
@@ -212,7 +226,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/get-user-profile`
+### `/profile/get-user-profile`
 - **Method:** GET
 - **Description:** To retrieve a user's profile data
 - **Request Headers:**
@@ -250,7 +264,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/update-user-profile`
+### `/profile/update-user-profile`
 - **Method:** PUT
 - **Description:** To update a user's profile data
 - **Request Headers:**
@@ -283,7 +297,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/get-activities-parameters`
+### `/activities/get-defined-activities`
 - **Method:** GET
 - **Description:** To retrieve all the defined activities & their parameters
 - **Request Headers:**
@@ -304,7 +318,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
                 ...
             ]
             ```
-            ***See [Example](#get-activities-parameters-1)***
+            ***See [Example](#example--activitiesget-defined-activities)***
     - `400 Bad Request` : Invalid request headers  
     **Response object :** 
         - *message*
@@ -318,7 +332,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/get-activities-history`
+### `/activities/get-activities-history`
 - **Method:** GET
 - **Description:** To retrieve a user's complete activities history
 - **Request Headers:**
@@ -327,8 +341,8 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `200 OK` : Activities history retrieved successfully  
     **Response object :**
         - *message*
-        - *trackableActivitesHistory  (Array)*
-        - *untrackableActivitesHistory  (Array)*
+        - *trackableActivitiesHistory  (Array)*
+        - *untrackableActivitiesHistory  (Array)*
             ```js
             // trackableActivitiesHistory Array
             [
@@ -343,7 +357,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
                 ...
             ]
             ```
-            ***See [Example](#get-activities-history-1)***
+            ***See [Example](#example--activitiesget-activities-history)***
     - `400 Bad Request` : Invalid request headers  
     **Response object :** 
         - *message*
@@ -354,7 +368,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/save-trackable-activity`
+### `/activities/save-trackable-activity`
 - **Method:** PUT
 - **Description:** To save a trackable activity
 - **Request Headers:**
@@ -366,7 +380,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
     - `comments`  *(optional, string)*  
-    ***See [Example](#save-trackable-activity-1)***
+    ***See [Example](#example--activitiessave-trackable-activity)***
 - **Response:**
     - `200 OK` : Activity saved successfully  
     **Response object :**
@@ -385,7 +399,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-### `/save-untrackable-activity`
+### `/activities/save-untrackable-activity`
 - **Method:** PUT
 - **Description:** To save an untrackable activity
 - **Request Headers:**
@@ -397,7 +411,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
     - `comments`  *(optional, string)*  
-    ***See [Example](#save-untrackable-activity-1)***
+    ***See [Example](#example--activitiessave-untrackable-activity)***
 - **Response:**
     - `200 OK` : Activity saved successfully  
     **Response object :**
@@ -416,9 +430,53 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
     **Response object :** 
         - *message*
 ---
-## Sample Requests / Responses
+### `/activities/delete-trackable-activity`
+- **Method:** DELETE
+- **Description:** To delete a trackable activity from history
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `activityHistoryID`  *(required, string)*
+- **Response:**
+    - `200 OK` : Activity deleted successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/activities/delete-untrackable-activity`
+- **Method:** DELETE
+- **Description:** To delete an untrackable activity from history
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `activityHistoryID`  *(required, string)*
+- **Response:**
+    - `200 OK` : Activity deleted successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
 
-### `/get-activities-parameters`
+
+#
+<h1 style="text-align: center;"> Sample Requests/Responses </h1>
+
+### Example : `/activities/get-defined-activities`
 - **Response Code :**  `200 OK`
 ```json
 // JSON
@@ -542,14 +600,14 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 }
 ```
 ---
-### `/get-activities-history`
+### Example : `/activities/get-activities-history`
 - **Response Code :**  `200 OK`
 ```json
 // JSON
 
 {
-    "message": "Activites' (trackable & untrackable) history retrieved successfully",
-    "trackableActivitesHistory": [
+    "message": "Activities' (trackable & untrackable) history retrieved successfully",
+    "trackableActivitiesHistory": [
         {
             "activityName": "Run",
             "startTime": "2022-01-01T00:00:00.000Z",
@@ -630,7 +688,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 }
 ```
 ---
-### `/save-trackable-activity`
+### Example : `/activities/save-trackable-activity`
 - **Request Body :**
 ```json
 // JSON
@@ -649,7 +707,7 @@ The authentication mechanism used in the provided API involces JSON Web Tokens (
 }
 ```
 ---
-### `/save-untrackable-activity`
+### Example : `/activities/save-untrackable-activity`
 - **Request Body :**
 ```json
 // JSON

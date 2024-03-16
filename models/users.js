@@ -92,6 +92,10 @@ const usersSchema = new mongoose.Schema({
     trackableActivitiesHistory: {
         type: [
             {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    index: true
+                },
                 activityName: String,
                 subActivity: String,
                 startTime: Date,
@@ -101,9 +105,13 @@ const usersSchema = new mongoose.Schema({
             }
         ],
     },
-    untrackableActivitesHistory: {
+    untrackableActivitiesHistory: {
         type: [
             {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    index: true
+                },
                 activityName: String,
                 subActivity: String,
                 startTime: Date,

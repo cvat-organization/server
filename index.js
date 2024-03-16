@@ -3,21 +3,23 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const dbConnect = require('./db/dbConnect');
-const registerRouter = require('./routes/register');
-const loginRouter = require('./routes/login');
+const registerRouter = require('./routes/auth/register');
+const loginRouter = require('./routes/auth/login');
 const homepageRouter = require('./routes/homepage');
-const logoutRouter = require('./routes/logout');
-const requestOTPRouter = require('./routes/request-otp');
-const verifyOTPRouter = require('./routes/verify-otp');
-const newPwdRouter = require('./routes/new-password');
-const requestPwdChangeRouter = require('./routes/request-pwd-change');
-const oAuthGoogleRouter = require('./routes/oauth-google');
-const getUserProfileRouter = require('./routes/get-user-profile');
-const updateUserProfileRouter = require('./routes/update-user-profile');
-const getActivitiesHistoryRouter = require('./routes/get-activities-history');
-const saveTrackableActivityRouter = require('./routes/save-trackable-activity');
-const saveUntrackableActivityRouter = require('./routes/save-untrackable-activity');
-const getActivitiesParametersRouter = require('./routes/get-activities-parameters');
+const logoutRouter = require('./routes/profile/logout');
+const requestOTPRouter = require('./routes/auth/account/request-otp');
+const verifyOTPRouter = require('./routes/auth/account/verify-otp');
+const newPwdRouter = require('./routes/auth/account/new-password');
+const requestPwdChangeRouter = require('./routes/profile/request-pwd-change');
+const oAuthGoogleRouter = require('./routes/auth/oauth/oauth-google');
+const getUserProfileRouter = require('./routes/profile/get-user-profile');
+const updateUserProfileRouter = require('./routes/profile/update-user-profile');
+const getActivitiesHistoryRouter = require('./routes/activities/get-activities-history');
+const saveTrackableActivityRouter = require('./routes/activities/save-trackable-activity');
+const saveUntrackableActivityRouter = require('./routes/activities/save-untrackable-activity');
+const getDefinedActivitiesRouter = require('./routes/activities/get-defined-activities');
+const deleteTrackableActivityRouter = require('./routes/activities/delete-trackable-activity');
+const deleteUntrackableActivityRouter = require('./routes/activities/delete-untrackable-activity');
 
 const app = express();
 
@@ -32,21 +34,27 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
+app.use('/auth/register', registerRouter);
+app.use('/auth/login', loginRouter);
+app.use('/auth/oauth/oauth-google', oAuthGoogleRouter);
+app.use('/auth/account/request-otp', requestOTPRouter);
+app.use('/auth/account/verify-otp', verifyOTPRouter);
+app.use('/auth/account/new-password', newPwdRouter);
+
 app.use('/homepage', homepageRouter);
-app.use('/logout', logoutRouter);
-app.use('/request-otp', requestOTPRouter);
-app.use('/verify-otp', verifyOTPRouter);
-app.use('/new-password', newPwdRouter);
-app.use('/request-pwd-change', requestPwdChangeRouter);
-app.use('/oauth-google', oAuthGoogleRouter);
-app.use('/get-user-profile', getUserProfileRouter);
-app.use('/update-user-profile', updateUserProfileRouter);
-app.use('/get-activities-history', getActivitiesHistoryRouter);
-app.use('/save-trackable-activity', saveTrackableActivityRouter);
-app.use('/save-untrackable-activity', saveUntrackableActivityRouter);
-app.use('/get-activities-parameters', getActivitiesParametersRouter);
+
+app.use('/profile/get-user-profile', getUserProfileRouter);
+app.use('/profile/update-user-profile', updateUserProfileRouter);
+app.use('/profile/request-pwd-change', requestPwdChangeRouter);
+app.use('/profile/logout', logoutRouter);
+
+app.use('/activities/get-defined-activities', getDefinedActivitiesRouter);
+app.use('/activities/get-activities-history', getActivitiesHistoryRouter);
+app.use('/activities/save-trackable-activity', saveTrackableActivityRouter);
+app.use('/activities/save-untrackable-activity', saveUntrackableActivityRouter);
+app.use('/activities/delete-trackable-activity', deleteTrackableActivityRouter);
+app.use('/activities/delete-untrackable-activity', deleteUntrackableActivityRouter);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

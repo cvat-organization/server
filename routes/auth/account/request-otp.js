@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-const users = require('../models/users');
-const passwordResetRequests = require('../models/passwordResetRequests');
-const sendEmail = require('../utils/email');
+const users = require('../../../models/users');
+const passwordResetRequests = require('../../../models/passwordResetRequests');
+const sendEmail = require('../../../utils/email');
 
 const otpExpiryDuration = 5 * 60 * 1000;
 

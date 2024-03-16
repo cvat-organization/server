@@ -76,5 +76,20 @@
         "activityParameters": {
             "count": "Number"
         }
+    },
+    {
+        "activityName": "Fasting",
+        "isTrackable": false,
+        "activityParameters": {
+            "fastingDurationGoal": "Number",
+            "fastingDurationAchieved": "Number"
+        }
+    },
+    {
+        "activityName": "Add Weight",
+        "isTrackable": false,
+        "activityParameters": {
+            "weight": "Number"
+        }
     }
 ]

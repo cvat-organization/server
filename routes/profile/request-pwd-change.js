@@ -3,12 +3,12 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const authMiddleware = require('../middleware/authMiddleware');
-const config = require('../config/config');
+const authMiddleware = require('../../middleware/authMiddleware');
+const config = require('../../config/config');
 const secretKey = config.jwtSecret;
 
-const users = require('../models/users');
-const passwordResetRequests = require('../models/passwordResetRequests');
+const users = require('../../models/users');
+const passwordResetRequests = require('../../models/passwordResetRequests');
 
 // Request for PWD Change Route
 router.post('/', authMiddleware, async (req, res) => {

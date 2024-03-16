@@ -7,7 +7,7 @@ const definedActivities = require('./definedActivities');
 // Import Mongoose schemas
 const users = require('../models/users');
 const passwordResetRequests = require('../models/passwordResetRequests');
-const activitesParameters = require('../models/activitiesParameters');
+const activitiesParameters = require('../models/activitiesParameters');
 
 const clientOptions = { 
     serverApi: { version: '1', strict: true, deprecationErrors: true },
@@ -24,8 +24,8 @@ async function run() {
         await Promise.all([
             users.createCollection(),
             passwordResetRequests.createCollection(),
-            activitesParameters.createCollection(),
-            activitesParameters.insertMany(definedActivities)
+            activitiesParameters.createCollection(),
+            activitiesParameters.insertMany(definedActivities)
         ]);
         await mongoose.connection.db.admin().command({ ping: 1 });
         console.log("Database created successfully!");

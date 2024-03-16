@@ -3,12 +3,12 @@ const router = express.Router();
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 
-const sendEmail = require('../utils/email');
-const config = require('../config/config');
+const sendEmail = require('../../../utils/email');
+const config = require('../../../config/config');
 const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID;
 const secretKey = config.jwtSecret;
 
-const users = require('../models/users');
+const users = require('../../../models/users');
 
 // Signin with Google Route
 router.post('/', async (req, res) => {

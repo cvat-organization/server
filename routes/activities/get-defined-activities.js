@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const activitiesParameters = require('../models/activitiesParameters');
-const authMiddleware = require('../middleware/authMiddleware');
+const activitiesParameters = require('../../models/activitiesParameters');
+const authMiddleware = require('../../middleware/authMiddleware');
 
-// Retrieve All Defined Available Activities & their Parameters Route
+// Retrieve All Defined Activities & their Parameters Route
 router.get('/', authMiddleware, async(req, res) => {
     try {
         const definedActivitiesParameters = await activitiesParameters.find({isActive: true});

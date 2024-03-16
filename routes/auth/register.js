@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-const users = require('../models/users');
-const sendEmail = require('../utils/email');
+const users = require('../../models/users');
+const sendEmail = require('../../utils/email');
 
 // Registration route
 router.post('/', async(req, res) => {

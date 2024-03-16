@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddleware = require('../middleware/authMiddleware');
-const users = require('../models/users');
+const authMiddleware = require('../../middleware/authMiddleware');
+const users = require('../../models/users');
 
 // Logout route
 router.post('/', authMiddleware, async(req, res) => {
