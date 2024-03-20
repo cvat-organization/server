@@ -89,38 +89,6 @@ const usersSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
     },
-    trackableActivitiesHistory: {
-        type: [
-            {
-                _id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    index: true
-                },
-                activityName: String,
-                subActivity: String,
-                startTime: Date,
-                endTime: Date,
-                parameters: Object,
-                comments: String,
-            }
-        ],
-    },
-    untrackableActivitiesHistory: {
-        type: [
-            {
-                _id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    index: true
-                },
-                activityName: String,
-                subActivity: String,
-                startTime: Date,
-                endTime: Date,
-                parameters: Object,
-                comments: String
-            }
-        ],
-    },
 
     // Audit fields
     createdAt: { type: Date, default: Date.now },

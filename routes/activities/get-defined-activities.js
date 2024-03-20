@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const activitiesParameters = require('../../models/activitiesParameters');
+const configActivitiesParameters = require('../../models/configActivitiesParameters');
 const authMiddleware = require('../../middleware/authMiddleware');
 
 // Retrieve All Defined Activities & their Parameters Route
 router.get('/', authMiddleware, async(req, res) => {
     try {
-        const definedActivitiesParameters = await activitiesParameters.find({isActive: true});
+        const definedActivitiesParameters = await configActivitiesParameters.find({isActive: true});
 
         // Ensure that the activities parameters collection is not empty
         if(!definedActivitiesParameters)

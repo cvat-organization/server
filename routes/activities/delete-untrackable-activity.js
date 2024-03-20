@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 
-const users = require('../../models/users');
+const activitiesHistory = require('../../models/activitiesHistory');
 const authMiddleware = require('../../middleware/authMiddleware');
 
 // Delete an unrackable Activity Route
 router.delete('/', authMiddleware, async(req, res) => {
     try {
-        const _id = req._id;
+        const userID = req._id;
         const activityHistoryID = req.body.activityHistoryID;
 
         // Check if all reqd fields are present
         if (!activityHistoryID)
             return res.status(400).json({message: "Invalid request body. activityHistoryID is missing"});
 
-        // Remove the activity from the user's untrackableActivitiesHistory array
-        await users.updateOne(
-            { _id },
+        // Remove the activity from the untrackableActivitiesHistory array of the activitiesHistory collection
+        await activitiesHistory.updateOne(
+            { userID },
             { $pull: { untrackableActivitiesHistory: { _id: activityHistoryID } } },
         );
 

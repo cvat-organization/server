@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
-const users = require('../../models/users');
-const activitiesParameters = require('../../models/activitiesParameters');
+const activitiesHistory = require('../../models/activitiesHistory');
+const configActivitiesParameters = require('../../models/configActivitiesParameters');
 const authMiddleware = require('../../middleware/authMiddleware');
 
 // Save a Trackable Activity Route
 router.put('/', authMiddleware, async(req, res) => {
     try {
-        const _id = req._id;     
+        const userID = req._id;     
         const activityName = req.body.activityName;
         const subActivity = req.body.subActivity;
         const startTime = req.body.startTime;
@@ -21,7 +21,7 @@ router.put('/', authMiddleware, async(req, res) => {
             return res.status(400).json({message: "Invalid request body"});
 
         // Check if the activity is defined and ensure that the activity is trackable
-        const activity = await activitiesParameters.findOne({ activityName, isTrackable: true });
+        const activity = await configActivitiesParameters.findOne({ activityName, isTrackable: true });
         if (!activity) 
             return res.status(404).json({message: "Activity not found"});
 
@@ -34,7 +34,7 @@ router.put('/', authMiddleware, async(req, res) => {
             return res.status(400).json({message: "Invalid request body. Invalid date format"});
 
 
-        // Read the parameters for the respective activity from `activitiesParameters`
+        // Read the parameters for the respective activity from `configActivitiesParameters`
         const activityParameters = activity.activityParameters;
 
         // Convert activityParameters to an array
@@ -58,14 +58,30 @@ router.put('/', authMiddleware, async(req, res) => {
         // Create an activityHistoryID for the entry
         const activityHistoryID = new mongoose.Types.ObjectId();
 
-        // Store all the fields in the trackable activities' history array
-        const result = await users.updateOne(
-            { _id },
-            { $push: { trackableActivitiesHistory: { _id: activityHistoryID, activityName, subActivity, startTime, endTime, parameters, comments } } },
+        // Append the object to the trackableActivitiesHistory array in the activitiesHistory collection.
+        // If the user doesn't have an entry in the activitiesHistory collection, create one
+        const result = await activitiesHistory.updateOne(
+            { userID },
+            {
+                $setOnInsert: { userID, isActive: true },
+                $push: {
+                    trackableActivitiesHistory: {
+                        _id: activityHistoryID,
+                        activityName,
+                        subActivity,
+                        startTime,
+                        endTime,
+                        parameters,
+                        comments,
+                    }
+                }
+            },
+            { upsert: true }
         );
+        
 
         // Respond to the client w appropriate message
-        if (result.modifiedCount > 0)
+        if (result.modifiedCount > 0 || result.upsertedCount > 0)
             return res.status(200).json({message: "Activity saved successfully", activityHistoryID});
         else 
             return res.status(500).json({message: "Error saving activity"});

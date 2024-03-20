@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const activitiesParametersSchema = new mongoose.Schema({
+const configActivitiesParametersSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true,
@@ -25,26 +25,26 @@ const activitiesParametersSchema = new mongoose.Schema({
     // Audit fields
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'activitiesParameters' },
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'activitiesParameters' },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'configActivitiesParameters' },
+    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'configActivitiesParameters' },
 });
 
 
 // Pre-save middleware
-activitiesParametersSchema.pre('save', async function(next) {
+configActivitiesParametersSchema.pre('save', async function(next) {
     this.isNew ? this.createdBy = this._id : this.updatedAt = Date.now();
     this.updatedBy = this._id;
     next();
 });
 
 // Pre-update middleware
-activitiesParametersSchema.pre(/^update/, function(next) {
+configActivitiesParametersSchema.pre(/^update/, function(next) {
     this._update.updatedAt = new Date();
     this._update.updatedBy = this.getQuery()._id;
     next();
 });
 
 
-const activitiesParameters = mongoose.model('activitiesParameters', activitiesParametersSchema);
+const configActivitiesParameters = mongoose.model('configActivitiesParameters', configActivitiesParametersSchema);
 
-module.exports = activitiesParameters;
+module.exports = configActivitiesParameters;
