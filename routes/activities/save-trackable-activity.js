@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
 const activitiesHistory = require('../../models/activitiesHistory');
 const configActivitiesParameters = require('../../models/configActivitiesParameters');
@@ -14,8 +15,12 @@ router.put('/', authMiddleware, async(req, res) => {
         const subActivity = req.body.subActivity;
         const startTime = req.body.startTime;
         const endTime = req.body.endTime;
+        const thumbnail = req.body.thumbnail;
         const comments = req.body.comments;
         
+        // Create an activityHistoryID for the entry
+        const activityHistoryID = new mongoose.Types.ObjectId();
+
         // Check if all reqd fields are present
         if (!(activityName && startTime && endTime)) 
             return res.status(400).json({message: "Invalid request body"});
@@ -32,6 +37,14 @@ router.put('/', authMiddleware, async(req, res) => {
         // Ensure that startTime and endTime are in a date-convertable format
         if (isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime))) 
             return res.status(400).json({message: "Invalid request body. Invalid date format"});
+
+        // If thumbnail is present, read it as a base64 string and save it in the `assets/thumbnails` folder
+        let thumbnailPath;
+        if (thumbnail) {
+            const base64ImageBuffer = Buffer.from(thumbnail.replace(/^data:image\/png;base64,/, ""), 'base64');
+            thumbnailPath = `assets/map-thumbnails/${activityHistoryID}.png`;
+            fs.writeFileSync(thumbnailPath, base64ImageBuffer);
+        }
 
 
         // Read the parameters for the respective activity from `configActivitiesParameters`
@@ -55,9 +68,6 @@ router.put('/', authMiddleware, async(req, res) => {
         for (let parameter of activityParametersArray)
             parameters[parameter] = req.body[parameter];
 
-        // Create an activityHistoryID for the entry
-        const activityHistoryID = new mongoose.Types.ObjectId();
-
         // Append the object to the trackableActivitiesHistory array in the activitiesHistory collection.
         // If the user doesn't have an entry in the activitiesHistory collection, create one
         const result = await activitiesHistory.updateOne(
@@ -72,6 +82,7 @@ router.put('/', authMiddleware, async(req, res) => {
                         startTime,
                         endTime,
                         parameters,
+                        thumbnail: thumbnailPath,
                         comments,
                     }
                 }

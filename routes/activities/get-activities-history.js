@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
 const activitiesHistory = require('../../models/activitiesHistory');
 const authMiddleware = require('../../middleware/authMiddleware');
@@ -9,6 +10,14 @@ router.get('/', authMiddleware, async(req, res) => {
     try {
         const userID = req._id;
         const user = await activitiesHistory.findOne({ userID, isActive: true });
+
+        // For all trackable activities, read the thumbnail from the file system and convert it to a base64 string
+        for (let activity of user.trackableActivitiesHistory) {
+            if (activity.thumbnail) {
+                const base64Image = fs.readFileSync(activity.thumbnail, {encoding: 'base64'});
+                activity.thumbnail = `data:image/png;base64,${base64Image}`;
+            }
+        }
 
         // Respond with trackable & untrackable activities' history
         res.status(200).json({

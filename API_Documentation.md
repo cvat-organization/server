@@ -253,7 +253,7 @@
         - *weight (Number)*
         - *stepLengthCM (Number)*
         - *subscriptionStatus (String)*
-        - *profilePicture*
+        - *profilePicture (String)* : base64 String encoded format
     - `400 Bad Request` : Invalid request headers/body  
     **Response object :** 
         - *message*
@@ -282,7 +282,7 @@
     - `height`  *(optional, Number)*
     - `weight`  *(optional, Number)*
     - `stepLengthCM`  *(optional, Number)*
-    - `profilePicture`  *(optional, string)*
+    - `profilePicture`  *(optional, string)* : base64 String encoded format
 - **Response:**
     - `200 OK` : User profile data updated successfully  
     **Response object :**
@@ -379,6 +379,7 @@
     - `startTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
+    - `thumbnail`  *(optional, string)* : Map thumbnail in base64 String encoded format
     - `comments`  *(optional, string)*  
     ***See [Example](#example--activitiessave-trackable-activity)***
 - **Response:**
@@ -447,6 +448,9 @@
     - `401 Unauthorized` : Token expired or invalid  
     **Response object :**
         - *message*
+    - `404 Not Found` : Activity not found  
+    **Response object :**
+        - *message*
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*
@@ -466,6 +470,9 @@
     **Response object :** 
         - *message*
     - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : Activity not found  
     **Response object :**
         - *message*
     - `500 Internal Server Error`  

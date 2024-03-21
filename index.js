@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const fs = require('fs');
 
 const dbConnect = require('./db/dbConnect');
 const registerRouter = require('./routes/auth/register');
@@ -61,6 +62,14 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
 });
+
+// Create the `assets` folder and it's subdirectories if it doesn't exist
+const assetsFolder = './assets';
+if (!fs.existsSync(assetsFolder)) {
+    fs.mkdirSync(assetsFolder);
+    fs.mkdirSync(`${assetsFolder}/profile-pictures`);
+    fs.mkdirSync(`${assetsFolder}/map-thumbnails`);
+}
 
 // Connect to the database
 dbConnect().catch(console.error);

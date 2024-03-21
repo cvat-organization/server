@@ -23,6 +23,7 @@ const activitiesHistorySchema = new mongoose.Schema({
                 startTime: Date,
                 endTime: Date,
                 parameters: Object,
+                thumbnail: String,
                 comments: String,
             }
         ],

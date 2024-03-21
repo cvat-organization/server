@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
 const users = require('../../models/users');
 const authMiddleware = require('../../middleware/authMiddleware');
@@ -9,6 +10,12 @@ router.get('/', authMiddleware, async(req, res) => {
     try {
         const _id = req._id;
         const user = await users.findOne({ _id });
+
+        // Read the profilePicture from the file system, add it's headers and convert it to a base64 string
+        if (user.profilePicture) {
+            const base64Image = fs.readFileSync(user.profilePicture, {encoding: 'base64'});
+            user.profilePicture = `data:image/png;base64,${base64Image}`;
+        }
 
         // Respond with user profile data
         res.status(200).json({
