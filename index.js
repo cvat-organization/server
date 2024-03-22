@@ -21,6 +21,8 @@ const saveUntrackableActivityRouter = require('./routes/activities/save-untracka
 const getDefinedActivitiesRouter = require('./routes/activities/get-defined-activities');
 const deleteTrackableActivityRouter = require('./routes/activities/delete-trackable-activity');
 const deleteUntrackableActivityRouter = require('./routes/activities/delete-untrackable-activity');
+const getPeriodicSummariesHistoryRouter = require('./routes/activities/get-periodic-summaries-history');
+const updatePeriodicSummariesRouter = require('./routes/activities/update-periodic-summaries');
 
 const app = express();
 
@@ -32,7 +34,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Routes
 app.use('/auth/register', registerRouter);
@@ -55,6 +57,9 @@ app.use('/activities/save-trackable-activity', saveTrackableActivityRouter);
 app.use('/activities/save-untrackable-activity', saveUntrackableActivityRouter);
 app.use('/activities/delete-trackable-activity', deleteTrackableActivityRouter);
 app.use('/activities/delete-untrackable-activity', deleteUntrackableActivityRouter);
+
+app.use('/periodic-summaries/get-periodic-summaries-history', getPeriodicSummariesHistoryRouter);
+app.use('/periodic-summaries/update-periodic-summaries', updatePeriodicSummariesRouter);
 
 
 // Error handling middleware

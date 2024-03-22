@@ -20,40 +20,46 @@ const periodicSummariesSchema = new mongoose.Schema({
         default: false,
     },
     daily: {
-        type: {
-            _id: {
-                type: mongoose.Schema.Types.ObjectId,
-                index: true
+        type: [
+            {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    index: true
+                },
+                date: Date,
+                steps: Number,
+                calories: Number,
+                distance: Number,
             },
-            dates: Array,
-            steps: Array,
-            calories: Array,
-            distance: Array,
-        },
+        ],
     },
     weekly: {
-        type: {
-            _id: {
-                type: mongoose.Schema.Types.ObjectId,
-                index: true
+        type: [
+            {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    index: true
+                },
+                date: Date,
+                steps: Number,
+                calories: Number,
+                distance: Number,
             },
-            dates: Array,
-            steps: Array,
-            calories: Array,
-            distance: Array,
-        },
+        ],
     },
     monthly: {
-        type: {
-            _id: {
-                type: mongoose.Schema.Types.ObjectId,
-                index: true
+        type: [
+            {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    index: true
+                },
+                date: Date,
+                steps: Number,
+                calories: Number,
+                distance: Number,
             },
-            dates: Array,
-            steps: Array,
-            calories: Array,
-            distance: Array,
-        },
+        ],
     },
 
     // Audit fields

@@ -22,6 +22,9 @@
 - [`/activities/save-untrackable-activity`](#activitiessave-untrackable-activity)
 - [`/activities/delete-trackable-activity`](#activitiesdelete-trackable-activity)
 - [`/activities/delete-untrackable-activity`](#activitiesdelete-untrackable-activity)
+### /periodic-summaries - Periodic User Statistics
+- [`/periodic-summaries/get-periodic-summaries-history`](#periodic-summariesget-periodic-summaries-history)
+- [`/periodic-summaries/update-periodic-summaries`](#periodic-summariesupdate-periodic-summaries)
 
 
 #
@@ -473,6 +476,72 @@
     **Response object :**
         - *message*
     - `404 Not Found` : Activity not found  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/periodic-summaries/get-periodic-summaries-history`
+- **Method:** GET
+- **Description:** To retrieve history of user statistics
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Periodic summaries history retrieved successfully  
+    **Response object :**
+        - *message*
+        - *daily (Object)*
+            ```js
+            {
+                dates: Array,
+                steps: Array,
+                calories: Array,
+                distances: Array,
+                stepsGoals: Array,
+                goalAchieved: Array
+            }
+            ```
+        - *weekly (Object)*
+            ```js
+            {
+                dates: Array,
+                steps: Array,
+                calories: Array,
+                distances: Array,
+            }
+            ```
+        - *monthly (Object)*  
+         ***Same format as weekly***
+    - `400 Bad Request` : Invalid request headers  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/periodic-summaries/update-periodic-summaries`
+- **Method:** PUT
+- **Description:** To update periodic user statistics
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `date`  *(required, string)*
+    - `steps`  *(required, Number)*
+    - `calories`  *(required, Number)*
+    - `distance`  *(required, Number)*
+    - `stepsGoal`  *(required, Number)*
+- **Response:**
+    - `200 OK` : Periodic summaries updated successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
     **Response object :**
         - *message*
     - `500 Internal Server Error`  
