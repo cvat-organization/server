@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
-const users = require('../models/users');
-const authMiddleware = require('../middleware/authMiddleware');
+const users = require('../../models/users');
+const authMiddleware = require('../../middleware/authMiddleware');
 
 // Update User Profile Route
 router.put('/', authMiddleware, async(req, res) => {
@@ -15,6 +16,18 @@ router.put('/', authMiddleware, async(req, res) => {
         if (!(fullName && displayName))
             return res.status(400).json({message: 'Invalid request body'});
 
+        // Accept profilePicture as a base64 String and save it in the `assets/profile-pictures` folder
+        if (req.body.profilePicture) {
+            const base64Image = (req.body.profilePicture).replace(/^data:image\/png;base64,/, "");
+            const base64ImageBuffer = Buffer.from(base64Image, 'base64');
+            const profilePicturePath = `assets/profile-pictures/${_id}.png`;
+
+            // Save the image
+            fs.writeFileSync(profilePicturePath, base64ImageBuffer);
+            req.body.profilePicture = profilePicturePath;
+        }
+
+        // Update user profile
         const udpateResult = await users.updateOne(
             { _id },
             { $set: {

@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const fetch = require('node-fetch');
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 
-const sendEmail = require('../utils/email');
-const config = require('../config/config');
+const sendEmail = require('../../../utils/email');
+const config = require('../../../config/config');
 const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID;
 const secretKey = config.jwtSecret;
 
-const users = require('../models/users');
+const users = require('../../../models/users');
 
 // Signin with Google Route
 router.post('/', async (req, res) => {
@@ -33,6 +35,13 @@ router.post('/', async (req, res) => {
         if (!(fullName && displayName && email))
             return res.status(400).json({message: 'Payload does not contain required field'});
 
+        // If profile picture URL is present, download the image from the google URL
+        let buffer = null;
+        if (payload.picture) {
+            const response = await fetch(payload.picture);
+            buffer = await response.buffer();
+        }
+        
         // Check if user exists
         const existingUser = await users.findOne({ email, userType });
 
@@ -59,6 +68,14 @@ router.post('/', async (req, res) => {
             isLoggedIn: true    // Log in the user
         });
         const savedUser = await newUser.save();
+
+        // Save the user's profilePicture in the `assets/profile-pictures` folder using their `_id` as the filename
+        if (buffer) {
+            const profilePicturePath = `assets/profile-pictures/${savedUser._id}.png`;
+            fs.writeFileSync(profilePicturePath, buffer);
+            savedUser.profilePicture = profilePicturePath;
+            await savedUser.save();
+        }
 
         // Send email to user confirming registration
         sendEmail({

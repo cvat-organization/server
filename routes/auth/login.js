@@ -3,8 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const users = require('../models/users');
-const config = require('../config/config');
+const users = require('../../models/users');
+const config = require('../../config/config');
 const secretKey = config.jwtSecret;
 
 // Duration for which to suspend a user (in ms)

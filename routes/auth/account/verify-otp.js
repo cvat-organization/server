@@ -3,10 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const config = require('../config/config');
+const config = require('../../../config/config');
 const secretKey = config.jwtSecret;
 
-const passwordResetRequests = require('../models/passwordResetRequests');
+const passwordResetRequests = require('../../../models/passwordResetRequests');
 
 // OTP Verification Route
 router.post('/', async (req, res) => {
