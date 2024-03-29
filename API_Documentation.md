@@ -22,6 +22,9 @@
 - [`/activities/save-untrackable-activity`](#activitiessave-untrackable-activity)
 - [`/activities/delete-trackable-activity`](#activitiesdelete-trackable-activity)
 - [`/activities/delete-untrackable-activity`](#activitiesdelete-untrackable-activity)
+### /daily-summaries - Daily User Statistics
+- [`/daily-summaries/get-periodic-summaries-history`](#daily-summariesget-periodic-summaries-history)
+- [`/daily-summaries/update-daily-summaries`](#daily-summariesupdate-daily-summaries)
 ### /admin - Admin Related
 - [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-time)
 
@@ -480,6 +483,76 @@
     **Response object :** 
         - *message*  
 ---
+### `/daily-summaries/get-periodic-summaries-history`
+- **Method:** GET
+- **Description:** To retrieve history of daily, weekly & monthly user statistics
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Periodic summaries history retrieved successfully  
+    **Response object :**
+        - *message*
+        - *daily (Object)*
+            ```js
+            {
+                dates: Array,
+                steps: Array,
+                calories: Array,
+                distances: Array,
+                stepsGoals: Array,
+                goalAchieved: Array
+            }
+            ```
+        - *weekly (Object)*
+            ```js
+            {
+                dates: Array,
+                steps: Array,
+                calories: Array,
+                distances: Array,
+            }
+            ```
+        - *monthly (Object)*  
+         ***Same format as weekly***
+    - `400 Bad Request` : Invalid request headers  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : No summaries found  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/daily-summaries/update-daily-summaries`
+- **Method:** PUT
+- **Description:** To update daily user statistics
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `summaries`  *(required, Array)* : Each element of the array must be an **Object** containing:
+        - ***date***  *(required, string)* : Must follow ISO 8601 Standard
+        - ***steps***  *(required, Number)*
+        - ***calories***  *(required, Number)*
+        - ***distance***  *(required, Number)*
+        - ***stepsGoal***  *(required, Number)*
+- **Response:**
+    - `200 OK` : Updated successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
 ### `/admin/dashboard/get-users-vs-time`
 - **Method:** GET
 - **Description:** To retrieve no. of users vs time data
@@ -520,7 +593,7 @@
             "activityName": "Walk",
             "isTrackable": true,
             "activityParameters": {
-                "map": "Object",        // Map is actually of type Array, but js return "object" for `typeof [1,2,3]`
+                "map": "Object",        // Map is actually of type Array, but js returns "object" for `typeof [1,2,3]`
                 "avgSpeed": "Number",
                 "steps": "Number",
                 "distance": "Number",
