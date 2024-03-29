@@ -9,6 +9,7 @@ const users = require('../models/users');
 const passwordResetRequests = require('../models/passwordResetRequests');
 const configActivitiesParameters = require('../models/configActivitiesParameters');
 const activitiesHistory = require('../models/activitiesHistory');
+const dailySummariesHistory = require('../models/dailySummariesHistory');
 
 const clientOptions = { 
     serverApi: { version: '1', strict: true, deprecationErrors: true },
@@ -25,12 +26,13 @@ async function run() {
         await Promise.all([
             // users.createCollection(),
             // passwordResetRequests.createCollection(),
-            configActivitiesParameters.createCollection(),
-            configActivitiesParameters.insertMany(definedActivities),
+            // configActivitiesParameters.createCollection(),
+            // configActivitiesParameters.insertMany(definedActivities),
             // activitiesHistory.createCollection()
+            dailySummariesHistory.createCollection()
         ]);
         await mongoose.connection.db.admin().command({ ping: 1 });
-        console.log("Database created successfully!");
+        console.log("Collection created successfully!");
     }
     finally {
         // Ensures that the client will close when you finish/error

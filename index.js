@@ -21,14 +21,16 @@ const saveUntrackableActivityRouter = require('./routes/activities/save-untracka
 const getDefinedActivitiesRouter = require('./routes/activities/get-defined-activities');
 const deleteTrackableActivityRouter = require('./routes/activities/delete-trackable-activity');
 const deleteUntrackableActivityRouter = require('./routes/activities/delete-untrackable-activity');
-const getPeriodicSummariesHistoryRouter = require('./routes/activities/get-periodic-summaries-history');
-const updatePeriodicSummariesRouter = require('./routes/activities/update-periodic-summaries');
+const getPeriodicSummariesHistoryRouter = require('./routes/daily-summaries/get-periodic-summaries-history');
+const updateDailySummariesRouter = require('./routes/daily-summaries/update-daily-summaries');
 
 const app = express();
 
 //CORS config
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://192.168.0.108:8081'],
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }
 app.use(cors(corsOptions));
@@ -58,8 +60,8 @@ app.use('/activities/save-untrackable-activity', saveUntrackableActivityRouter);
 app.use('/activities/delete-trackable-activity', deleteTrackableActivityRouter);
 app.use('/activities/delete-untrackable-activity', deleteUntrackableActivityRouter);
 
-app.use('/periodic-summaries/get-periodic-summaries-history', getPeriodicSummariesHistoryRouter);
-app.use('/periodic-summaries/update-periodic-summaries', updatePeriodicSummariesRouter);
+app.use('/daily-summaries/get-periodic-summaries-history', getPeriodicSummariesHistoryRouter);
+app.use('/daily-summaries/update-daily-summaries', updateDailySummariesRouter);
 
 
 // Error handling middleware

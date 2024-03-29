@@ -17,9 +17,10 @@ async function run() {
 
         // DELETE the collection
         // await mongoose.connection.db.dropCollection('users');
-        // await mongoose.connection.db.dropCollection('passwordResetRequests');
+        // await mongoose.connection.db.dropCollection('passwordresetrequests');
         // await mongoose.connection.db.dropCollection('configactivitiesparameters');
-        await mongoose.connection.db.dropCollection('activitiesHistory');
+        // await mongoose.connection.db.dropCollection('activitieshistories');
+        await mongoose.connection.db.dropCollection('dailysummarieshistory');
         console.log("Collection deleted successfully!");
     }
     finally {
