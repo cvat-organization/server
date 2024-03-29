@@ -21,6 +21,7 @@ const saveUntrackableActivityRouter = require('./routes/activities/save-untracka
 const getDefinedActivitiesRouter = require('./routes/activities/get-defined-activities');
 const deleteTrackableActivityRouter = require('./routes/activities/delete-trackable-activity');
 const deleteUntrackableActivityRouter = require('./routes/activities/delete-untrackable-activity');
+const getUsersVsTimeRouter = require('./routes/admin/dashboard/get-users-vs-time');
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use('/activities/save-untrackable-activity', saveUntrackableActivityRouter);
 app.use('/activities/delete-trackable-activity', deleteTrackableActivityRouter);
 app.use('/activities/delete-untrackable-activity', deleteUntrackableActivityRouter);
 
+app.use('/admin/dashboard/get-users-vs-time', getUsersVsTimeRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

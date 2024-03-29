@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddlewareAdmin = require('../../middleware/authMiddlewareAdmin');
-const users = require('../../models/users');
+const authMiddlewareAdmin = require('../../../middleware/authMiddlewareAdmin');
+const users = require('../../../models/users');
 
 // Get users vs time data route
 router.get('/', authMiddlewareAdmin, async(req, res) => {
@@ -19,10 +19,12 @@ router.get('/', authMiddlewareAdmin, async(req, res) => {
         // Convert the user data to 2 arrays of userIDs and registration dates
         const dateVSCount = {};
         usersData.forEach((user) => {
-            if (!dateVSCount[user.createdAt])
-                dateVSCount[user.createdAt] = 0;
-            else
-                dateVSCount[user.createdAt] ++;
+            const formattedDate = user.createdAt.toISOString().split('T')[0];
+            if (!dateVSCount[formattedDate]) {
+                dateVSCount[formattedDate] = 1;
+            } else {
+                dateVSCount[formattedDate]++;
+            }
         });
 
         // Respond to the client with the user data
