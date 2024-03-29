@@ -25,7 +25,8 @@
 ### /daily-summaries - Daily User Statistics
 - [`/daily-summaries/get-periodic-summaries-history`](#daily-summariesget-periodic-summaries-history)
 - [`/daily-summaries/update-daily-summaries`](#daily-summariesupdate-daily-summaries)
-
+### /admin - Admin Related
+- [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-time)
 
 #
 <h1 style="text-align: center;"> Endpoints </h1>
@@ -542,6 +543,29 @@
     - `200 OK` : Updated successfully  
     **Response object :**
         - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/admin/dashboard/get-users-vs-time`
+- **Method:** GET
+- **Description:** To retrieve no. of users vs time data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `userType`  *(required, string)* : Counts of this userType will be returned
+- **Response:**
+    - `200 OK` : Users vs time data retrieved successfully  
+    **Response object :**
+        - *message*
+        - *dates (Array)*
+        - *counts (Array)*
     - `400 Bad Request` : Invalid request headers/body  
     **Response object :** 
         - *message*

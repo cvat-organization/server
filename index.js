@@ -23,6 +23,7 @@ const deleteTrackableActivityRouter = require('./routes/activities/delete-tracka
 const deleteUntrackableActivityRouter = require('./routes/activities/delete-untrackable-activity');
 const getPeriodicSummariesHistoryRouter = require('./routes/daily-summaries/get-periodic-summaries-history');
 const updateDailySummariesRouter = require('./routes/daily-summaries/update-daily-summaries');
+const getUsersVsTimeRouter = require('./routes/admin/dashboard/get-users-vs-time');
 
 const app = express();
 
@@ -63,6 +64,7 @@ app.use('/activities/delete-untrackable-activity', deleteUntrackableActivityRout
 app.use('/daily-summaries/get-periodic-summaries-history', getPeriodicSummariesHistoryRouter);
 app.use('/daily-summaries/update-daily-summaries', updateDailySummariesRouter);
 
+app.use('/admin/dashboard/get-users-vs-time', getUsersVsTimeRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
