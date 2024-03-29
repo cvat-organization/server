@@ -8,7 +8,13 @@ const secretKey = config.jwtSecret;
 
 async function authMiddleware(req, res, next) {
     try {
-        const token = req.headers.authorization.split(' ')[1];
+        const authorization = req.headers.authorization;
+
+        // Check if authorization header is present in request
+        if (!authorization)
+            return res.status(400).json({message: 'Authorization header missing'});
+
+        const token = authorization.split(' ')[1];
 
         // Check if token is present in request header
         if (!token)
