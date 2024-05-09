@@ -11,6 +11,10 @@ router.get('/', authMiddleware, async(req, res) => {
         const userID = req._id;
         const user = await activitiesHistory.findOne({ userID, isActive: true });
 
+        // If the user has no activities' history, respond with an appropriate message
+        if (!user)
+            return res.status(404).json({message: "No activities' history found"});
+        
         // For all trackable activities, read the thumbnail from the file system and convert it to a base64 string
         for (let activity of user.trackableActivitiesHistory) {
             if (activity.thumbnail) {

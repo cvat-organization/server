@@ -12,7 +12,7 @@ router.put('/', authMiddleware, async(req, res) => {
     try {
         const userID = req._id;     
         const activityName = req.body.activityName;
-        const subActivity = req.body.subActivity;
+        const subActivityTree = req.body.subActivityTree;
         const startTime = req.body.startTime;
         const endTime = req.body.endTime;
         const thumbnail = req.body.thumbnail;
@@ -31,8 +31,18 @@ router.put('/', authMiddleware, async(req, res) => {
             return res.status(404).json({message: "Activity not found"});
 
         // If the activity has subActivities, ensure that the subActivity is present in the request & is valid
-        if (activity.subActivities.length > 0 && !(subActivity && activity.subActivities.includes(subActivity))) 
-            return res.status(400).json({message: "Invalid request body. Sub-activity is missing or invalid"});
+        if (activity.hasSubActivities) {
+            let x = activity.subActivities;
+            let y = subActivityTree;
+            while (!Array.isArray(x)){
+                if (x === undefined || y === undefined)
+                    return res.status(400).json({message: "Invalid request body. SubActivityTree is missing/invalid"});
+                x = x[Object.keys(y)[0]];
+                y = y[Object.keys(y)[0]];
+            }
+            if (y["_v"] === undefined || x.indexOf(y["_v"]) === -1)
+                return res.status(400).json({message: "Invalid request body. Invalid subActivityTree"});
+        }
 
         // Ensure that startTime and endTime are in a date-convertable format
         if (isNaN(Date.parse(startTime)) || isNaN(Date.parse(endTime))) 
@@ -55,11 +65,11 @@ router.put('/', authMiddleware, async(req, res) => {
 
         // Ensure that the parameters are present in the request & are of the correct data type
         for (let parameter of activityParametersArray) {
-            if (!req.body[parameter]) 
+            if (req.body[parameter] === undefined) 
                 return res.status(400).json({message: `Invalid request body. Parameter "${parameter}" is missing`});
 
             if (typeof req.body[parameter] !== activityParameters[parameter].toLowerCase()) 
-                return res.status(400).json({message: `Invalid request body. Parameter "${parameter}" is of invalid format`});
+                return res.status(400).json({message: `Invalid request body. Parameter "${parameter}" is of invalid format. Expected type <${activityParameters[parameter].toLowerCase()}>, but got type <${typeof req.body[parameter]}>`});
         }
 
         
@@ -78,7 +88,7 @@ router.put('/', authMiddleware, async(req, res) => {
                     trackableActivitiesHistory: {
                         _id: activityHistoryID,
                         activityName,
-                        subActivity,
+                        subActivityTree,
                         startTime,
                         endTime,
                         parameters,

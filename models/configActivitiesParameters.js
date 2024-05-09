@@ -18,8 +18,12 @@ const configActivitiesParametersSchema = new mongoose.Schema({
         type: Object,
         required: true,
     },
+    hasSubActivities: {
+        type: Boolean,
+        required: true,
+    },
     subActivities: {
-        type: Array,
+        type: Object,
     },
 
     // Audit fields

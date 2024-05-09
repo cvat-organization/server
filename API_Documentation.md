@@ -368,6 +368,9 @@
     - `401 Unauthorized` : Token expired or invalid  
     **Response object :**
         - *message*
+    - `404 Not Found` : No activities history found  
+    **Response object :**
+        - *message*
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*
@@ -379,7 +382,7 @@
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
 - **Request Body:**
     - `activityName`  *(required, string)*
-    - `subActivity`  *(if the activity definition contains subActivities: required & must be one among the defined subActivities ; else: optional, string)*
+    - `subActivityTree`  *(if the activity definition contains subActivities: required & should follow the same hierarchy ; else: optional, object)*
     - `startTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
@@ -390,7 +393,7 @@
     - `200 OK` : Activity saved successfully  
     **Response object :**
         - *message*
-        - *activityHistoryID (String)*  : Store this to delete/edit the activity in future
+        - *activityHistoryID (string)*  : Store this to delete/edit the activity in future
     - `400 Bad Request` : Invalid request headers/body  
     **Response object :** 
         - *message*
@@ -411,7 +414,7 @@
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
 - **Request Body:**
     - `activityName`  *(required, string)*
-    - `subActivity`  *(if the activity definition contains subActivities: required & must be one among the defined subActivities ; else: optional, string)*
+    - `subActivityTree`  *(if the activity definition contains subActivities: required & should follow the same hierarchy ; else: optional, object)*
     - `startTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `endTime`  *(required, string)* : Must follow ISO 8601 Standard
     - `*parameters`  *(required, string)* : Each individual parameter defined for the activity must be specified separately in req body
@@ -588,25 +591,25 @@
 {
     "definedActivitiesParameters": [
         {
-            "_id": "65f17059817e57031fe7e760",
+            "_id": "663c9125e908f285a4634fd3",
             "isActive": true,
             "activityName": "Walk",
             "isTrackable": true,
             "activityParameters": {
-                "map": "Object",        // Map is actually of type Array, but js returns "object" for `typeof [1,2,3]`
+                "map": "Object",
                 "avgSpeed": "Number",
                 "steps": "Number",
                 "distance": "Number",
                 "calories": "Number",
                 "elevationGain": "Number"
             },
-            "subActivities": [],
-            "createdAt": "2024-03-13T09:22:33.223Z",
-            "updatedAt": "2024-03-13T09:22:33.224Z",
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.260Z",
+            "updatedAt": "2024-05-09T09:02:29.260Z",
             "__v": 0
         },
         {
-            "_id": "65f17059817e57031fe7e761",
+            "_id": "663c9125e908f285a4634fd4",
             "isActive": true,
             "activityName": "Run",
             "isTrackable": true,
@@ -618,13 +621,13 @@
                 "calories": "Number",
                 "elevationGain": "Number"
             },
-            "subActivities": [],
-            "createdAt": "2024-03-13T09:22:33.224Z",
-            "updatedAt": "2024-03-13T09:22:33.224Z",
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.262Z",
+            "updatedAt": "2024-05-09T09:02:29.262Z",
             "__v": 0
         },
         {
-            "_id": "65f17059817e57031fe7e762",
+            "_id": "663c9125e908f285a4634fd5",
             "isActive": true,
             "activityName": "Hike",
             "isTrackable": true,
@@ -636,13 +639,13 @@
                 "calories": "Number",
                 "elevationGain": "Number"
             },
-            "subActivities": [],
-            "createdAt": "2024-03-13T09:22:33.224Z",
-            "updatedAt": "2024-03-13T09:22:33.224Z",
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.262Z",
+            "updatedAt": "2024-05-09T09:02:29.262Z",
             "__v": 0
         },
         {
-            "_id": "65f17059817e57031fe7e763",
+            "_id": "663c9125e908f285a4634fd6",
             "isActive": true,
             "activityName": "Ride",
             "isTrackable": true,
@@ -653,51 +656,126 @@
                 "calories": "Number",
                 "elevationGain": "Number"
             },
-            "subActivities": [],
-            "createdAt": "2024-03-13T09:22:33.225Z",
-            "updatedAt": "2024-03-13T09:22:33.225Z",
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.262Z",
+            "updatedAt": "2024-05-09T09:02:29.262Z",
             "__v": 0
         },
         {
-            "_id": "65f17059817e57031fe7e764",
+            "_id": "663c9125e908f285a4634fd7",
             "isActive": true,
-            "activityName": "Gym",
+            "activityName": "Exercise",
             "isTrackable": false,
             "activityParameters": {
-                "weight": "Number",
-                "sets": "Number",
-                "repsPerSet": "Number"
+                "weight": "String",
+                "sets": "String",
+                "reps/time": "String"
             },
-            "subActivities": [
-                "Barbell Curls",
-                "Barbell Rows",
-                "Bench Press",
-                "Bent-Over Rows",
-                "Bicep Curls / Dumbell Curls Dips",
-                "Deadlifts",
-                "Leg Curls",
-                "Squats",
-                "Agility Ladder Drills",
-                "Box Jumps",
-                "High Knees",
-                "Jump Rope",
-                "Jump Squats"
-            ],
-            "createdAt": "2024-03-13T09:22:33.225Z",
-            "updatedAt": "2024-03-13T09:22:33.225Z",
+            "hasSubActivities": true,
+            "subActivities": {
+                "Strength Training": {
+                    "Upper Body Exercises": [
+                        "Barbell Curls",
+                        "Barbell Rows",
+                        "Bench Press",
+                        "Bent-Over Rows",
+                        "Bicep Curls / Dumbbell Curls",
+                        "Dips",
+                        "Dumbbell Flyes",
+                        "Dumbbell Rows",
+                        "Lat Pulldowns",
+                        "Lateral Raises",
+                        "Planks",
+                        "Pull-Ups",
+                        "Push-Ups",
+                        "Russian Twists",
+                        "Shoulder Press",
+                        "Shrugs",
+                        "Tricep Extensions"
+                    ],
+                    "Lower Body Exercises": [
+                        "Calf Raises",
+                        "Deadlifts",
+                        "Leg Curls",
+                        "Leg Extensions",
+                        "Leg Press",
+                        "Lunges",
+                        "Romanian Deadlifts",
+                        "Squats"
+                    ]
+                },
+                "Functional Cardio": [
+                    "Agility Ladder Drills",
+                    "Box Jumps",
+                    "Burpees",
+                    "Butt Kicks",
+                    "Cross-Country Skiing",
+                    "High Knees",
+                    "Jump Rope",
+                    "Jump Squats",
+                    "Jumping Jacks",
+                    "Kickboxing",
+                    "Mountain Climbers",
+                    "Skaters",
+                    "Sprints",
+                    "Stair Climbing"
+                ],
+                "Steady-State Cardio": [
+                    "Cycling (Stationary)",
+                    "Cycling (Outdoor)",
+                    "Dancing (Zumba)",
+                    "Dancing (Aerobics)",
+                    "Elliptical Training",
+                    "Rowing (Machine)",
+                    "Rowing (Outdoor)",
+                    "Running (Treadmill)",
+                    "Running (Outdoor)",
+                    "Swimming",
+                    "Walking"
+                ]
+            },
+            "createdAt": "2024-05-09T09:02:29.262Z",
+            "updatedAt": "2024-05-09T09:02:29.262Z",
             "__v": 0
         },
         {
-            "_id": "65f17059817e57031fe7e765",
+            "_id": "663c9125e908f285a4634fd8",
             "isActive": true,
             "activityName": "Yoga",
             "isTrackable": false,
             "activityParameters": {
-                "count": "Number"
+                "count": "String"
             },
-            "subActivities": [],
-            "createdAt": "2024-03-13T09:22:33.225Z",
-            "updatedAt": "2024-03-13T09:22:33.225Z",
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.262Z",
+            "updatedAt": "2024-05-09T09:02:29.263Z",
+            "__v": 0
+        },
+        {
+            "_id": "663c9125e908f285a4634fd9",
+            "isActive": true,
+            "activityName": "Fasting",
+            "isTrackable": false,
+            "activityParameters": {
+                "fastingDurationGoal": "Number",
+                "fastingDurationAchieved": "Number"
+            },
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.263Z",
+            "updatedAt": "2024-05-09T09:02:29.263Z",
+            "__v": 0
+        },
+        {
+            "_id": "663c9125e908f285a4634fda",
+            "isActive": true,
+            "activityName": "Add Weight",
+            "isTrackable": false,
+            "activityParameters": {
+                "weight": "Number"
+            },
+            "hasSubActivities": false,
+            "createdAt": "2024-05-09T09:02:29.263Z",
+            "updatedAt": "2024-05-09T09:02:29.263Z",
             "__v": 0
         }
     ]
@@ -713,6 +791,7 @@
     "message": "Activities' (trackable & untrackable) history retrieved successfully",
     "trackableActivitiesHistory": [
         {
+            "_id": "663c9acfb60184975dca6a8c",
             "activityName": "Run",
             "startTime": "2022-01-01T00:00:00.000Z",
             "endTime": "2022-01-01T01:00:00.000Z",
@@ -733,10 +812,11 @@
                 "calories": 1000,
                 "elevationGain": 50
             },
-            "comments": "Ran 15km today",
-            "_id": "65f170b842b3357617800105"
+            "thumbnail": "<string>",
+            "comments": "Ran 15km today"
         },
         {
+            "_id": "663c9ad4b60184975dca6a90",
             "activityName": "Walk",
             "startTime": "2022-01-01T02:00:00.000Z",
             "endTime": "2022-01-01T02:30:00.000Z",
@@ -757,36 +837,48 @@
                 "calories": 300,
                 "elevationGain": 10
             },
-            "comments": "Walked in the park",
-            "_id": "65f172a8d633c8d94dd1d4f5"
+            "thumbnail": "<string>",
+            "comments": "Walked in the park"
         }
     ],
     "untrackableActivitiesHistory": [
         {
-            "activityName": "Gym",
-            "subActivity": "Bench Press",
+            "_id": "663c95ad8428bf23f3ec38df",
+            "activityName": "Exercise",
+            "subActivityTree": {
+                "Strength Training": {
+                    "Upper Body Exercises": {
+                        "_v": "Bench Press"
+                    }
+                }
+            },
             "startTime": "2022-01-01T03:00:00.000Z",
             "endTime": "2022-01-01T03:30:00.000Z",
             "parameters": {
-                "weight": 15,
-                "sets": 3,
-                "repsPerSet": 7
+                "weight": "15kg",
+                "sets": "3",
+                "reps/time": "7 reps"
             },
-            "comments": "Did 3 sets of 15 reps",
-            "_id": "65f172b5d633c8d94dd1d4fb"
+            "comments": "Did 3 sets of 7 reps"
         },
         {
-            "activityName": "Gym",
-            "subActivity": "Squats",
+            "_id": "663c97edb97a837de5ef25e4",
+            "activityName": "Exercise",
+            "subActivityTree": {
+                "Strength Training": {
+                    "Lower Body Exercises": {
+                        "_v": "Squats"
+                    }
+                }
+            },
             "startTime": "2022-01-01T03:30:00.000Z",
             "endTime": "2022-01-01T04:00:00.000Z",
             "parameters": {
-                "weight": 10,
-                "sets": 3,
-                "repsPerSet": 10
+                "weight": "10",
+                "sets": "3",
+                "reps/time": "10"
             },
-            "comments": "Did 3 sets of 10 reps",
-            "_id": "65f172bfd633c8d94dd1d502"
+            "comments": "Did 3 sets of 10 reps"
         }
     ]
 }
@@ -807,6 +899,7 @@
     "distance": 15,
     "calories": 1000,
     "elevationGain": 50,
+    "thumbnail": "<string>",
     "comments": "Ran 15km today"
 }
 ```
@@ -817,13 +910,19 @@
 // JSON
 
 {
-    "activityName": "Gym",
-    "subActivity": "Bench Press",
+    "activityName": "Exercise",
+    "subActivityTree": {
+        "Strength Training": {
+            "Upper Body Exercises": {
+                "_v": "Bench Press"
+            }
+        }
+    },
     "startTime": "2022-01-01T03:00:00Z",
     "endTime": "2022-01-01T03:30:00Z",
-    "weight": 15,
-    "sets": 3,
-    "repsPerSet": 7,
-    "comments": "Did 3 sets of 15 reps"
+    "weight": "15kg",
+    "sets": "3",
+    "reps/time": "7 reps",
+    "comments": "Did 3 sets of 7 reps"
 }
 ```

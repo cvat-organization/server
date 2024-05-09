@@ -19,7 +19,7 @@ const activitiesHistorySchema = new mongoose.Schema({
                     index: true
                 },
                 activityName: String,
-                subActivity: String,
+                subActivityTree: Object,
                 startTime: Date,
                 endTime: Date,
                 parameters: Object,
@@ -36,7 +36,7 @@ const activitiesHistorySchema = new mongoose.Schema({
                     index: true
                 },
                 activityName: String,
-                subActivity: String,
+                subActivityTree: Object,
                 startTime: Date,
                 endTime: Date,
                 parameters: Object,

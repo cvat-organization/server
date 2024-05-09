@@ -26,13 +26,13 @@ async function run() {
         await Promise.all([
             // users.createCollection(),
             // passwordResetRequests.createCollection(),
-            // configActivitiesParameters.createCollection(),
-            // configActivitiesParameters.insertMany(definedActivities),
-            // activitiesHistory.createCollection()
-            dailySummariesHistory.createCollection()
+             configActivitiesParameters.createCollection(),
+             configActivitiesParameters.insertMany(definedActivities),
+             activitiesHistory.createCollection()
+            // dailySummariesHistory.createCollection()
         ]);
         await mongoose.connection.db.admin().command({ ping: 1 });
-        console.log("Collection created successfully!");
+        console.log("Collection(s) created successfully!");
     }
     finally {
         // Ensures that the client will close when you finish/error

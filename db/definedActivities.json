@@ -3,13 +3,14 @@
         "activityName": "Walk",
         "isTrackable": true,
         "activityParameters": {
-            "map": "Object",
+            "map": "Object",  
             "avgSpeed": "Number",
             "steps": "Number",
             "distance": "Number",
             "calories": "Number",
             "elevationGain": "Number"
-        }
+        },
+        "hasSubActivities": false
     },
     {
         "activityName": "Run",
@@ -21,7 +22,8 @@
             "distance": "Number",
             "calories": "Number",
             "elevationGain": "Number"
-        }
+        },
+        "hasSubActivities": false
     },
     {
         "activityName": "Hike",
@@ -33,7 +35,8 @@
             "distance": "Number",
             "calories": "Number",
             "elevationGain": "Number"
-        }
+        },
+        "hasSubActivities": false
     },
     {
         "activityName": "Ride",
@@ -44,38 +47,88 @@
             "distance": "Number",
             "calories": "Number",
             "elevationGain": "Number"
-        }
+        },
+        "hasSubActivities": false
     },
     {
-        "activityName": "Gym",
+        "activityName": "Exercise",
         "isTrackable": false,
         "activityParameters": {
-            "weight": "Number",
-            "sets": "Number",
-            "repsPerSet": "Number"
+            "weight": "String",
+            "sets": "String",
+            "reps/time": "String"
         },
-        "subActivities": [
-            "Barbell Curls",
-            "Barbell Rows",
-            "Bench Press",
-            "Bent-Over Rows",
-            "Bicep Curls / Dumbell Curls Dips",
-            "Deadlifts",
-            "Leg Curls",
-            "Squats",
-            "Agility Ladder Drills",
-            "Box Jumps",
-            "High Knees",
-            "Jump Rope",
-            "Jump Squats"
-        ]
+        "hasSubActivities": true,
+        "subActivities": {
+            "Strength Training": {
+                "Upper Body Exercises": [
+                    "Barbell Curls",
+                    "Barbell Rows",
+                    "Bench Press",
+                    "Bent-Over Rows",
+                    "Bicep Curls / Dumbbell Curls",
+                    "Dips",
+                    "Dumbbell Flyes",
+                    "Dumbbell Rows",
+                    "Lat Pulldowns",
+                    "Lateral Raises",
+                    "Planks",
+                    "Pull-Ups",
+                    "Push-Ups",
+                    "Russian Twists",
+                    "Shoulder Press",
+                    "Shrugs",
+                    "Tricep Extensions"
+                ],
+                "Lower Body Exercises": [
+                    "Calf Raises",
+                    "Deadlifts",
+                    "Leg Curls",
+                    "Leg Extensions",
+                    "Leg Press",
+                    "Lunges",
+                    "Romanian Deadlifts",
+                    "Squats"
+                ]
+            },
+            "Functional Cardio": [
+                "Agility Ladder Drills",
+                "Box Jumps",
+                "Burpees",
+                "Butt Kicks",
+                "Cross-Country Skiing",
+                "High Knees",
+                "Jump Rope",
+                "Jump Squats",
+                "Jumping Jacks",
+                "Kickboxing",
+                "Mountain Climbers",
+                "Skaters",
+                "Sprints",
+                "Stair Climbing"
+            ],
+            "Steady-State Cardio": [
+                "Cycling (Stationary)",
+                "Cycling (Outdoor)",
+                "Dancing (Zumba)",
+                "Dancing (Aerobics)",
+                "Elliptical Training",
+                "Rowing (Machine)",
+                "Rowing (Outdoor)",
+                "Running (Treadmill)",
+                "Running (Outdoor)",
+                "Swimming",
+                "Walking"    
+            ]
+        }
     },
     {
         "activityName": "Yoga",
         "isTrackable": false,
         "activityParameters": {
-            "count": "Number"
-        }
+            "count": "String"
+        },
+        "hasSubActivities": false
     },
     {
         "activityName": "Fasting",
@@ -83,13 +136,15 @@
         "activityParameters": {
             "fastingDurationGoal": "Number",
             "fastingDurationAchieved": "Number"
-        }
+        },
+        "hasSubActivities": false
     },
     {
         "activityName": "Add Weight",
         "isTrackable": false,
         "activityParameters": {
             "weight": "Number"
-        }
+        },
+        "hasSubActivities": false
     }
 ]
