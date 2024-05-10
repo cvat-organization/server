@@ -89,6 +89,53 @@ const usersSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
     },
+    
+    // Vendor fields
+    businessWebsite: {
+        type: String,
+    },
+    businessAddress: {
+        type: String,
+    },
+    businessDomain: {
+        type: String,
+    },
+    subCategories: {
+        type: Array,
+    },
+    businessDescription: {
+        type: String,
+    },
+    businessLogo: {
+        type: String,
+    },
+    serviceType: {
+        type: String,
+    },
+    contactPersonName: {
+        type: String,
+    },
+    contactPersonEmail: {
+        type: String,
+    },
+    contactPersonPhoneNo: {
+        type: String,
+    },
+    contactPersonDesignation: {
+        type: String,
+    },
+    isContactPersonDecisionMaker: {
+        type: Boolean,
+    },
+    incorporationCertificate: {
+        type: String,
+    },
+    gst: {
+        type: String,
+    },
+    pan: {
+        type: String,
+    },
 
     // Audit fields
     createdAt: { type: Date, default: Date.now },

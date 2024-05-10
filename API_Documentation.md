@@ -27,6 +27,8 @@
 - [`/daily-summaries/update-daily-summaries`](#daily-summariesupdate-daily-summaries)
 ### /admin - Admin Related
 - [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-time)
+- [`/admin/vendor/register`](#adminvendorregister)
+- [`/admin/vendor/upload-certificates`](#adminvendorupload-certificates)
 
 #
 <h1 style="text-align: center;"> Endpoints </h1>
@@ -578,6 +580,72 @@
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*  
+---
+### `/admin/vendor/register`
+- **Method:** POST
+- **Description:** To register a new vendor
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `businessName`  *(required, string)*
+    - `businessDisplayName`  *(required, string)*
+    - `businessEmail`  *(required, string)*
+    - `businessContactNo`  *(required, string)*
+    - `businessWebsite`  *(optional, string)*
+    - `businessAddress`  *(optional, string)*
+    - `businessDomain`  *(optional, string)*
+    - `subCategories`  *(optional, array)*
+    - `businessDescription`  *(optional, string)*
+    - `businessLogo`  *(optional, string)* : base64 String encoded format
+    - `serviceType`  *(optional, string)*
+    - `contactPersonName`  *(optional, string)*
+    - `contactPersonEmail`  *(optional, string)*
+    - `contactPersonPhoneNo`  *(optional, string)*
+    - `contactPersonDesignation`  *(optional, string)*
+    - `isContactPersonDecisionMaker`  *(optional, boolean)*
+- **Respone:**
+    - `201 Created` : Vendor registered successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :** 
+        - *message*
+    - `409 Conflict` : Existing businessEmail/businessContactNo  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/admin/vendor/upload-certificates`
+- **Method:** PUT
+- **Description:** To upload a vendor's business certificates
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+    - `businessEmail`  *(required, string)*
+- **Request Body: Multipart/Form-data**
+    - `incorporationCertificate`  *(required, file)* : PDF File
+    - `gst`  *(required, file)* : PDF File
+    - `pan`  *(required, file)* : PDF File
+- **Respone:**
+    - `200 OK` : Business certificates uploaded successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :** 
+        - *message*
+    - `404 Not Found` : Vendor not found  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
 
 
 #
