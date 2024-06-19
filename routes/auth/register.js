@@ -48,7 +48,7 @@ router.post('/', async(req, res) => {
             to: savedUser.email,
             subject: 'Successful Account Registration',
             html: `<h2> Hi ${savedUser.fullName},</h2>
-            <br> <p> Your account with CV - Activity Tracker App has been successfully registered and has been assigned the following trackerID:</p>
+            <br> <p> Your account with CV - Activity Tracker App has been successfully registered and assigned the following trackerID:</p>
             <br> <h2> <strong> ${savedUser.trackerID} </strong> </h2>`,
         });
 

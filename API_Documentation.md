@@ -31,6 +31,8 @@
 - [`/admin/vendor/upload-certificates`](#adminvendorupload-certificates)
 - [`admin/users/read`](#adminusersread)
 - [`admin/users/update`](#adminusersupdate)
+- [`admin/users/write`](#adminuserswrite)
+- [`admin/users/delete`](#adminusersdelete)
 
 #
 <h1 style="text-align: center;"> Endpoints </h1>
@@ -566,7 +568,7 @@
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
 - **Request Body:**
-    - `userType`  *(required, string)* : Counts of this userType will be returned
+    - `userType`  *(required, string)* : Counts of this userType will be returned - Must be one among {"Customer", "Vendor", "Superuser"}
 - **Response:**
     - `200 OK` : Users vs time data retrieved successfully  
     **Response object :**
@@ -671,7 +673,7 @@
 ---
 ### `/admin/users/update`
 - **Method:** PUT
-- **Description:** To update the users collection
+- **Description:** To update a user in the users collection
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
 - **Request Body:**
@@ -681,7 +683,7 @@
     - `email`  *(optional, string)*
     - `password`  *(optional, string)*
     - `phoneNo`  *(optional, string)*
-    - `userType`  *(optional, string)*
+    - `userType`  *(optional, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
     - `trackerID`  *(optional, string)*
     - `createdBy`  *(optional, string)*
     - `updatedBy`  *(optional, string)*
@@ -734,6 +736,93 @@
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*  
+---
+### `/admin/users/write`
+- **Method:** POST
+- **Description:** To insert a new user into the users collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `fullName`  *(required, string)*
+    - `displayName`  *(required, string)*
+    - `phoneNo`  *(required, string)*
+    - `email`  *(required, string)*
+    - `password`  *(required, string)*
+    - `userType` *(required, string)* : Must be one among {"Customer", "Vendor", "Superuser"}
+    - `trackerID`  *(optional, string)*
+    - `createdBy`  *(optional, string)*
+    - `updatedBy`  *(optional, string)*
+    - `bio`  *(optional, string)*
+    - `gender`  *(optional, string)*
+    - `metric`  *(optional, string)*
+    - `profilePicture`  *(optional, string)* : base64 String encoded format
+    - `website`  *(optional, string)*
+    - `location`  *(optional, string)*
+    - `businessWebsite`  *(optional, string)*
+    - `businessAddress`  *(optional, string)*
+    - `businessDomain`  *(optional, string)*
+    - `businessDescription`  *(optional, string)*
+    - `businessLogo`  *(optional, string)* : base64 String encoded format
+    - `serviceType`  *(optional, string)*
+    - `contactPersonName`  *(optional, string)*
+    - `contactPersonEmail`  *(optional, string)*
+    - `contactPersonPhoneNo`  *(optional, string)*
+    - `contactPersonDesignation`  *(optional, string)*
+    - `subscriptionStatus`  *(optional, string)*
+    - `subCategories`  *(optional, array)*
+    - `followers`  *(optional, array)*
+    - `incomingFollowRequests`  *(optional, array)*
+    - `following`  *(optional, array)*
+    - `isActive`  *(optional, boolean)*
+    - `isLoggedIn`  *(optional, boolean)*
+    - `isContactPersonDecisionMaker`  *(optional, boolean)*
+    - `incorrectAttemptsCount`  *(optional, number)*
+    - `__v`  *(optional, number)*
+    - `birthYear`  *(optional, number)*
+    - `height`  *(optional, number)*
+    - `weight`  *(optional, number)*
+    - `stepLengthCM`  *(optional, number)*
+    - `suspendedTill`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `createdAt`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `updatedAt`  *(optional, string)* : Must follow ISO 8601 Standard
+- **Respone:**
+    - `201 Created` : User registered successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `409 Conflict` : Existing phoneNo/username  
+    **Response object :** 
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/users/delete`
+- **Method:** DELETE
+- **Description:** To delete a user from the users collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : User deleted successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : User not found. _id is invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message* 
 
 
 #

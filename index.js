@@ -28,6 +28,8 @@ const vendorRegistrationRouter = require('./routes/admin/vendor/register');
 const vendorUploadCertificatesRouter = require('./routes/admin/vendor/upload-certificates');
 const usersReadRouter = require('./routes/admin/users/read');
 const usersUpdateRouter = require('./routes/admin/users/update');
+const usersWriteRouter = require('./routes/admin/users/write');
+const usersDeleteRouter = require('./routes/admin/users/delete');
 
 const app = express();
 
@@ -73,6 +75,8 @@ app.use('/admin/vendor/register', vendorRegistrationRouter);
 app.use('/admin/vendor/upload-certificates', vendorUploadCertificatesRouter);
 app.use('/admin/users/read', usersReadRouter);
 app.use('/admin/users/update', usersUpdateRouter)
+app.use('/admin/users/write', usersWriteRouter);
+app.use('/admin/users/delete', usersDeleteRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
