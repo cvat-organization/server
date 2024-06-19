@@ -29,6 +29,8 @@
 - [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-time)
 - [`/admin/vendor/register`](#adminvendorregister)
 - [`/admin/vendor/upload-certificates`](#adminvendorupload-certificates)
+- [`admin/users/read`](#adminusersread)
+- [`admin/users/update`](#adminusersupdate)
 
 #
 <h1 style="text-align: center;"> Endpoints </h1>
@@ -646,6 +648,92 @@
     - `500 Internal Server Error`  
     **Response object :** 
         - *message*
+---
+### `/admin/users/read`
+- **Method:** GET
+- **Description:** To retrieve the complete users collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Users data retrieved successfully  
+    **Response object :**
+        - *message*
+        - *usersData (Array)*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/users/update`
+- **Method:** PUT
+- **Description:** To update the users collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `_id`  *(**required**, string)*
+    - `fullName`  *(optional, string)*
+    - `displayName`  *(optional, string)*
+    - `email`  *(optional, string)*
+    - `password`  *(optional, string)*
+    - `phoneNo`  *(optional, string)*
+    - `userType`  *(optional, string)*
+    - `trackerID`  *(optional, string)*
+    - `createdBy`  *(optional, string)*
+    - `updatedBy`  *(optional, string)*
+    - `bio`  *(optional, string)*
+    - `gender`  *(optional, string)*
+    - `metric`  *(optional, string)*
+    - `profilePicture`  *(optional, string)* : base64 String encoded format
+    - `website`  *(optional, string)*
+    - `location`  *(optional, string)*
+    - `businessWebsite`  *(optional, string)*
+    - `businessAddress`  *(optional, string)*
+    - `businessDomain`  *(optional, string)*
+    - `businessDescription`  *(optional, string)*
+    - `businessLogo`  *(optional, string)* : base64 String encoded format
+    - `serviceType`  *(optional, string)*
+    - `contactPersonName`  *(optional, string)*
+    - `contactPersonEmail`  *(optional, string)*
+    - `contactPersonPhoneNo`  *(optional, string)*
+    - `contactPersonDesignation`  *(optional, string)*
+    - `subscriptionStatus`  *(optional, string)*
+    - `subCategories`  *(optional, array)*
+    - `followers`  *(optional, array)*
+    - `incomingFollowRequests`  *(optional, array)*
+    - `following`  *(optional, array)*
+    - `isActive`  *(optional, boolean)*
+    - `isLoggedIn`  *(optional, boolean)*
+    - `isContactPersonDecisionMaker`  *(optional, boolean)*
+    - `incorrectAttemptsCount`  *(optional, number)*
+    - `__v`  *(optional, number)*
+    - `birthYear`  *(optional, number)*
+    - `height`  *(optional, number)*
+    - `weight`  *(optional, number)*
+    - `stepLengthCM`  *(optional, number)*
+    - `suspendedTill`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `createdAt`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `updatedAt`  *(optional, string)* : Must follow ISO 8601 Standard
+- **Response:**
+    - `200 OK` : Users collection updated successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : User not found. _id is invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
 
 
 #
