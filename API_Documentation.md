@@ -29,10 +29,12 @@
 - [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-time)
 - [`/admin/vendor/register`](#adminvendorregister)
 - [`/admin/vendor/upload-certificates`](#adminvendorupload-certificates)
+- [`/admin/vendor/get-vendor-details`](#adminvendorget-vendor-details)
 - [`admin/users/read`](#adminusersread)
 - [`admin/users/update`](#adminusersupdate)
 - [`admin/users/write`](#adminuserswrite)
 - [`admin/users/delete`](#adminusersdelete)
+- [`admin/users/get-activities-history`](#adminusersget-activities-history)
 
 #
 <h1 style="text-align: center;"> Endpoints </h1>
@@ -651,6 +653,26 @@
     **Response object :** 
         - *message*
 ---
+### `/admin/vendor/get-vendor-details`
+- **Method:** GET
+- **Description:** To retrieve all vendors' data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Vendors data retrieved successfully  
+    **Response object :**
+        - *message*
+        - *vendorsData (Array)* : Array of objects. To know the object properties, see the Request Body of [`/admin/users/update`](#adminusersupdate)
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
 ### `/admin/users/read`
 - **Method:** GET
 - **Description:** To retrieve the complete users collection
@@ -823,6 +845,47 @@
     - `500 Internal Server Error`  
     **Response object :** 
         - *message* 
+---
+### `/admin/users/get-activities-history`
+- **Method:** GET
+- **Description:** To retrieve a user's complete activities history
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**  
+    - `userID`  *(required, string)* : userID of the user who's activities history you want to retrieve
+- **Response:**
+    - `200 OK` : Activities history retrieved successfully  
+    **Response object :**
+        - *message*
+        - *trackableActivitiesHistory  (Array)*
+        - *untrackableActivitiesHistory  (Array)*
+            ```js
+            // trackableActivitiesHistory Array
+            [
+                {
+                    activityName: String,
+                    subActivity: String,    // Optional, may be undefined
+                    startTime: String,
+                    endTime: String,
+                    parameters: Object,
+                    comments: String,   // Optional, may be undefined
+                }
+                ...
+            ]
+            ```
+            ***See [Example](#example--activitiesget-activities-history)***
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : No activities history found  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
 
 
 #

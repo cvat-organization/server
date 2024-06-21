@@ -3,15 +3,19 @@ const router = express.Router();
 const fs = require('fs');
 
 const activitiesHistory = require('../../models/activitiesHistory');
-const authMiddleware = require('../../middleware/authMiddleware');
+const authMiddlewareAdmin = require('../../../middleware/authMiddlewareAdmin');
 
 // Retrieve Activities' History Route
-router.get('/', authMiddleware, async(req, res) => {
+router.get('/', authMiddlewareAdmin, async(req, res) => {
     try {
-        const userID = req._id;
-        const user = await activitiesHistory.findOne({ userID, isActive: true });
+        const userID = req.body.userID;
+
+        // Check if all reqd fields are present
+        if (!userID)
+            return res.status(400).json({message: "Please provide all required fields"});
 
         // If the user has no activities' history, respond with an appropriate message
+        const user = await activitiesHistory.findOne({ userID, isActive: true });
         if (!user)
             return res.status(404).json({message: "No activities' history found"});
         

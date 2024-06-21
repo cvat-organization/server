@@ -26,10 +26,12 @@ const updateDailySummariesRouter = require('./routes/daily-summaries/update-dail
 const getUsersVsTimeRouter = require('./routes/admin/dashboard/get-users-vs-time');
 const vendorRegistrationRouter = require('./routes/admin/vendor/register');
 const vendorUploadCertificatesRouter = require('./routes/admin/vendor/upload-certificates');
+const vendorGetVendorDetailsRouter = require('./routes/admin/vendor/get-vendor-details');
 const usersReadRouter = require('./routes/admin/users/read');
 const usersUpdateRouter = require('./routes/admin/users/update');
 const usersWriteRouter = require('./routes/admin/users/write');
 const usersDeleteRouter = require('./routes/admin/users/delete');
+const usersGetActivitiesHistoryRouter = require('./routes/admin/users/get-activities-history');
 
 const app = express();
 
@@ -73,10 +75,12 @@ app.use('/daily-summaries/update-daily-summaries', updateDailySummariesRouter);
 app.use('/admin/dashboard/get-users-vs-time', getUsersVsTimeRouter);
 app.use('/admin/vendor/register', vendorRegistrationRouter);
 app.use('/admin/vendor/upload-certificates', vendorUploadCertificatesRouter);
+app.use('/admin/vendor/get-vendor-details', vendorGetVendorDetailsRouter);
 app.use('/admin/users/read', usersReadRouter);
 app.use('/admin/users/update', usersUpdateRouter)
 app.use('/admin/users/write', usersWriteRouter);
 app.use('/admin/users/delete', usersDeleteRouter);
+app.use('/admin/users/get-activities-history', usersGetActivitiesHistoryRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
