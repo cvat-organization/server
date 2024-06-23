@@ -32,6 +32,11 @@ const usersUpdateRouter = require('./routes/admin/users/update');
 const usersWriteRouter = require('./routes/admin/users/write');
 const usersDeleteRouter = require('./routes/admin/users/delete');
 const usersGetActivitiesHistoryRouter = require('./routes/admin/users/get-activities-history');
+const activitieshistoryReadRouter = require('./routes/admin/activitieshistory/read');
+const activitieshistoryUpdateRouter = require('./routes/admin/activitieshistory/update');
+const activitieshistoryWriteRouter = require('./routes/admin/activitieshistory/write');
+const activitieshistoryDeleteRouter = require('./routes/admin/activitieshistory/delete');
+
 
 const app = express();
 
@@ -81,6 +86,11 @@ app.use('/admin/users/update', usersUpdateRouter)
 app.use('/admin/users/write', usersWriteRouter);
 app.use('/admin/users/delete', usersDeleteRouter);
 app.use('/admin/users/get-activities-history', usersGetActivitiesHistoryRouter);
+app.use('/admin/activitieshistory/read', activitieshistoryReadRouter);
+app.use('/admin/activitieshistory/update', activitieshistoryUpdateRouter);
+app.use('/admin/activitieshistory/write', activitieshistoryWriteRouter);
+app.use('/admin/activitieshistory/delete', activitieshistoryDeleteRouter);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

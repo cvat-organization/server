@@ -35,6 +35,10 @@
 - [`admin/users/write`](#adminuserswrite)
 - [`admin/users/delete`](#adminusersdelete)
 - [`admin/users/get-activities-history`](#adminusersget-activities-history)
+- [`admin/activitieshistory/read`](#adminactivitieshistoryread)
+- [`admin/activitieshistory/update`](#adminactivitieshistoryupdate)
+- [`admin/activitieshistory/write`](#adminactivitieshistorywrite)
+- [`admin/activitieshistory/delete`](#adminactivitieshistorydelete)
 
 #
 <h1 style="text-align: center;"> Endpoints </h1>
@@ -829,6 +833,8 @@
 - **Description:** To delete a user from the users collection
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**  
+    - `_id`  *(required, string)*
 - **Response:**
     - `200 OK` : User deleted successfully  
     **Response object :**
@@ -881,6 +887,112 @@
     **Response object :**
         - *message*
     - `404 Not Found` : No activities history found  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*
+---
+### `/admin/activitieshistory/read`
+- **Method:** GET
+- **Description:** To retrieve the complete activitieshistory collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Activities data retrieved successfully  
+    **Response object :**
+        - *message*
+        - *activitiesData (Array)*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/activitieshistory/update`
+- **Method:** PUT
+- **Description:** To update a document in the activitieshistory collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `_id`  *(**required**, string)*
+    - `userID`  *(optional, string)*
+    - `trackableActivitiesHistory`  *(optional, array)*  [**See this**](#example--activitiesget-activities-history) for format
+    - `untrackableActivitiesHistory`  *(optional, array)*  [**See this**](#example--activitiesget-activities-history) for format
+    - `isActive`  *(optional, boolean)*
+    - `createdAt`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `updatedAt`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `createdBy`  *(optional, string)*
+    - `updatedBy`  *(optional, string)*
+    - `__v`  *(optional, number)*
+- **Response:**
+    - `200 OK` : Document updated successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : Document not found. _id is invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/activitieshistory/write`
+- **Method:** POST
+- **Description:** To insert a new document into the activitieshistory collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**
+    - `userID`  *(required, string)*
+    - `trackableActivitiesHistory`  *(optional, array)*  [**See this**](#example--activitiesget-activities-history) for format
+    - `untrackableActivitiesHistory`  *(optional, array)*  [**See this**](#example--activitiesget-activities-history) for format
+    - `isActive`  *(optional, boolean)*
+    - `createdAt`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `updatedAt`  *(optional, string)* : Must follow ISO 8601 Standard
+    - `createdBy`  *(optional, string)*
+    - `updatedBy`  *(optional, string)*
+    - `__v`  *(optional, number)*
+- **Respone:**
+    - `201 Created` : Document created successfully  
+    **Response object :** 
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/activitieshistory/delete`
+- **Method:** DELETE
+- **Description:** To delete a document from the activitieshistory collection
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Request Body:**  
+    - `_id`  *(required, string)*
+- **Response:**
+    - `200 OK` : Document deleted successfully  
+    **Response object :**
+        - *message*
+    - `400 Bad Request` : Invalid request headers/body  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `404 Not Found` : Document not found. _id is invalid  
     **Response object :**
         - *message*
     - `500 Internal Server Error`  

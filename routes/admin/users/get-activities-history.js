@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
-const activitiesHistory = require('../../models/activitiesHistory');
+const activitiesHistory = require('../../../models/activitiesHistory');
 const authMiddlewareAdmin = require('../../../middleware/authMiddlewareAdmin');
 
 // Retrieve Activities' History Route
