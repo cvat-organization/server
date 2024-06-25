@@ -6,13 +6,13 @@ const activitiesHistory = require('../../../models/activitiesHistory');
 const authMiddlewareAdmin = require('../../../middleware/authMiddlewareAdmin');
 
 // Retrieve Activities' History Route
-router.get('/', authMiddlewareAdmin, async(req, res) => {
+router.get('/:userID', authMiddlewareAdmin, async(req, res) => {
     try {
-        const userID = req.body.userID;
+        const userID = req.params.userID;
 
         // Check if all reqd fields are present
         if (!userID)
-            return res.status(400).json({message: "Please provide all required fields"});
+            return res.status(400).json({message: "Path parameter userID is required"});
 
         // If the user has no activities' history, respond with an appropriate message
         const user = await activitiesHistory.findOne({ userID, isActive: true });

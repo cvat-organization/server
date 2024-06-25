@@ -24,6 +24,8 @@ const deleteUntrackableActivityRouter = require('./routes/activities/delete-untr
 const getPeriodicSummariesHistoryRouter = require('./routes/daily-summaries/get-periodic-summaries-history');
 const updateDailySummariesRouter = require('./routes/daily-summaries/update-daily-summaries');
 const getUsersVsTimeRouter = require('./routes/admin/dashboard/get-users-vs-time');
+const getUsersVsLocationRouter = require('./routes/admin/dashboard/get-users-vs-location');
+const getUsersVsActivityRouter = require('./routes/admin/dashboard/get-users-vs-activity');
 const vendorRegistrationRouter = require('./routes/admin/vendor/register');
 const vendorUploadCertificatesRouter = require('./routes/admin/vendor/upload-certificates');
 const vendorGetVendorDetailsRouter = require('./routes/admin/vendor/get-vendor-details');
@@ -78,6 +80,8 @@ app.use('/daily-summaries/get-periodic-summaries-history', getPeriodicSummariesH
 app.use('/daily-summaries/update-daily-summaries', updateDailySummariesRouter);
 
 app.use('/admin/dashboard/get-users-vs-time', getUsersVsTimeRouter);
+app.use('/admin/dashboard/get-users-vs-location', getUsersVsLocationRouter);
+app.use('/admin/dashboard/get-users-vs-activity', getUsersVsActivityRouter);
 app.use('/admin/vendor/register', vendorRegistrationRouter);
 app.use('/admin/vendor/upload-certificates', vendorUploadCertificatesRouter);
 app.use('/admin/vendor/get-vendor-details', vendorGetVendorDetailsRouter);

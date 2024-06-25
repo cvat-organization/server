@@ -26,7 +26,9 @@
 - [`/daily-summaries/get-periodic-summaries-history`](#daily-summariesget-periodic-summaries-history)
 - [`/daily-summaries/update-daily-summaries`](#daily-summariesupdate-daily-summaries)
 ### /admin - Admin Related
-- [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-time)
+- [`/admin/dashboard/get-users-vs-time`](#admindashboardget-users-vs-timeusertype)
+- [`/admin/dashboard/get-users-vs-location`](#admindashboardget-users-vs-location)
+- [`/admin/dashboard/get-users-vs-activity`](#admindashboardget-users-vs-activity)
 - [`/admin/vendor/register`](#adminvendorregister)
 - [`/admin/vendor/upload-certificates`](#adminvendorupload-certificates)
 - [`/admin/vendor/get-vendor-details`](#adminvendorget-vendor-details)
@@ -34,7 +36,7 @@
 - [`admin/users/update`](#adminusersupdate)
 - [`admin/users/write`](#adminuserswrite)
 - [`admin/users/delete`](#adminusersdelete)
-- [`admin/users/get-activities-history`](#adminusersget-activities-history)
+- [`admin/users/get-activities-history`](#adminusersget-activities-historyuserid)
 - [`admin/activitieshistory/read`](#adminactivitieshistoryread)
 - [`admin/activitieshistory/update`](#adminactivitieshistoryupdate)
 - [`admin/activitieshistory/write`](#adminactivitieshistorywrite)
@@ -568,20 +570,59 @@
     **Response object :** 
         - *message*
 ---
-### `/admin/dashboard/get-users-vs-time`
+### `/admin/dashboard/get-users-vs-time/:userType`
 - **Method:** GET
 - **Description:** To retrieve no. of users vs time data
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
-- **Request Body:**
+- **URL Params:**
     - `userType`  *(required, string)* : Counts of this userType will be returned - Must be one among {"Customer", "Vendor", "Superuser"}
 - **Response:**
     - `200 OK` : Users vs time data retrieved successfully  
     **Response object :**
         - *message*
-        - *dates (Array)*
-        - *counts (Array)*
-    - `400 Bad Request` : Invalid request headers/body  
+        - *data (Array)*
+    - `400 Bad Request` : Invalid request headers/URL params  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/dashboard/get-users-vs-location`
+- **Method:** GET
+- **Description:** To retrieve no. of users vs location data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Users vs location data retrieved successfully  
+    **Response object :**
+        - *message*
+        - *data (Array)*
+    - `400 Bad Request` : Invalid request headers  
+    **Response object :** 
+        - *message*
+    - `401 Unauthorized` : Token expired or invalid  
+    **Response object :**
+        - *message*
+    - `500 Internal Server Error`  
+    **Response object :** 
+        - *message*  
+---
+### `/admin/dashboard/get-users-vs-activity`
+- **Method:** GET
+- **Description:** To retrieve no. of users vs activity data
+- **Request Headers:**
+    - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
+- **Response:**
+    - `200 OK` : Users vs activity data retrieved successfully  
+    **Response object :**
+        - *message*
+        - *data (Array)*
+    - `400 Bad Request` : Invalid request headers  
     **Response object :** 
         - *message*
     - `401 Unauthorized` : Token expired or invalid  
@@ -852,12 +893,12 @@
     **Response object :** 
         - *message* 
 ---
-### `/admin/users/get-activities-history`
+### `/admin/users/get-activities-history/:userID`
 - **Method:** GET
 - **Description:** To retrieve a user's complete activities history
 - **Request Headers:**
     - `authorization`  *(required, string)* : Bearer Token (JWT token of the session)
-- **Request Body:**  
+- **URL Params:**  
     - `userID`  *(required, string)* : userID of the user who's activities history you want to retrieve
 - **Response:**
     - `200 OK` : Activities history retrieved successfully  
@@ -880,7 +921,7 @@
             ]
             ```
             ***See [Example](#example--activitiesget-activities-history)***
-    - `400 Bad Request` : Invalid request headers/body  
+    - `400 Bad Request` : Invalid request headers/URL params  
     **Response object :** 
         - *message*
     - `401 Unauthorized` : Token expired or invalid  
