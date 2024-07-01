@@ -7,7 +7,36 @@ const activitiesHistory = require('../../../models/activitiesHistory');
 // Get complete activitieshistory collection route
 router.get('/', authMiddlewareAdmin, async(req, res) => {
     try{
-        const activitiesData = await activitiesHistory.find();
+        const aggregation = activitiesHistory.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userID',
+                    foreignField: '_id',
+                    as: 'userDetails'
+                }
+            },
+            {
+                $unwind: '$userDetails'
+            },
+            {
+                $project: {
+                    _id: 1,
+                    userID: 1,
+                    fullName: '$userDetails.fullName',
+                    trackableActivitiesHistory: 1,
+                    untrackableActivitiesHistory: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    createdBy: 1,
+                    updatedBy: 1,
+                    isActive: 1,
+                    __v: 1
+                }
+            }
+        ]);
+        
+        const activitiesData = await aggregation.exec();
 
         // Respond to the client with the activities data
         res.status(200).json({
